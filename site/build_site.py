@@ -48,6 +48,15 @@ def build(reports: str, template: str, out: str, demos: str | None = None) -> No
     ind, shared = ms(sweep4, "independent", nmax), ms(sweep4, "prefix_share_batch", nmax)
     indb = ms(sweep4, "independent_batch", nmax)
 
+    def delta(x):
+        """A difference that came out exactly zero is reported as a word.
+
+        Written as +0.000 it reads like a measurement that landed just barely
+        on the positive side, which is a claim the number does not make; the
+        signed form is kept for every value that is actually non-zero.
+        """
+        return "0 drop" if round(x, 3) == 0 else f"{x:+.3f}"
+
     facts = {
         "total": round(ind / shared, 1), "batching": round(ind / indb, 1),
         "sharing": round(indb / shared, 1), "ms_ind": ind, "ms_shared": shared,
@@ -75,10 +84,10 @@ def build(reports: str, template: str, out: str, demos: str | None = None) -> No
                                 "seen": M["seen_in_training"], "facts": facts},
                                separators=(",", ":")),
         "__TOTAL__": str(facts["total"]),
-        "__HEAD__": f'{facts["head_delta"]:+.3f}',
-        "__SUFF__": f'{facts["suff_delta"]:+.3f}',
-        "__SCALE__": f'{facts["scale_delta"]:+.3f}',
-        "__SLOT__": f'{facts["slot_delta"]:+.3f}',
+        "__HEAD__": delta(facts["head_delta"]),
+        "__SUFF__": delta(facts["suff_delta"]),
+        "__SCALE__": delta(facts["scale_delta"]),
+        "__SLOT__": delta(facts["slot_delta"]),
         "__SCALE_LAT__": str(facts["scale_lat_pct"]),
         "__SCALE_MEM__": str(facts["scale_mem_pct"]),
         "__MS_GEN__": str(facts["ms_gen"]),
