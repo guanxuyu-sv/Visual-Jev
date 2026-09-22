@@ -1,0 +1,560 @@
+<title>Visual Jev</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;450;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --ground:#F6F7F6; --panel:#FFFFFF; --ink:#11161A; --ink-2:#4C5760;
+  --muted:#7D878E; --rule:#DCE0DE; --rule-soft:#E9ECEA;
+  --batch:#2A6FD6; --share:#D8541F; --null:#8D959B; --null-soft:#EDEFEE;
+  --display:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --ground:#0E1214; --panel:#151A1D; --ink:#E9EDEB; --ink-2:#AEB8BD;
+    --muted:#8__SCALE_LAT__C92; --rule:#262D31; --rule-soft:#1D2326;
+    --batch:#5E9BEA; --share:#F0783E; --null:#7C868C; --null-soft:#1A2023;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --ground:#0E1214; --panel:#151A1D; --ink:#E9EDEB; --ink-2:#AEB8BD;
+  --muted:#8__SCALE_LAT__C92; --rule:#262D31; --rule-soft:#1D2326;
+  --batch:#5E9BEA; --share:#F0783E; --null:#7C868C; --null-soft:#1A2023;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px}
+a{color:inherit}
+h1,h2,h3{text-wrap:balance;margin:0}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  font-weight:600}
+
+/* ---------- header ---------- */
+header{border-bottom:1px solid var(--rule);position:sticky;top:0;background:var(--ground);z-index:5}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding-block:13px;flex-wrap:wrap}
+.mark{font-family:var(--display);font-size:21px;letter-spacing:.01em}
+.mark em{font-style:italic;color:var(--share)}
+nav{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--ink-2)}
+nav a{text-decoration:none;padding-block:2px;border-bottom:1px solid transparent}
+nav a:hover,nav a:focus-visible{border-bottom-color:var(--ink)}
+
+/* ---------- hero ---------- */
+.hero{padding-block:56px 40px;border-bottom:1px solid var(--rule)}
+.hero h1{font-family:var(--display);font-size:clamp(34px,6vw,60px);line-height:1.02;
+  font-weight:400;letter-spacing:-.01em;max-width:17ch}
+.hero h1 em{font-style:italic;color:var(--share)}
+.lede{margin-top:18px;max-width:62ch;color:var(--ink-2);font-size:17px}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;
+  margin-top:34px;background:var(--rule);border:1px solid var(--rule)}
+.cell{background:var(--panel);padding:20px 22px}
+.cell .n{font-family:var(--mono);font-size:clamp(30px,5vw,42px);font-weight:500;
+  line-height:1;font-variant-numeric:tabular-nums}
+.cell .k{margin-top:10px;font-size:13.5px;color:var(--ink-2);max-width:32ch}
+.cell.win .n{color:var(--share)}
+.cell.zero .n{color:var(--null)}
+
+/* ---------- sections ---------- */
+section{padding-block:46px;border-bottom:1px solid var(--rule)}
+.shead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+.shead h2{font-family:var(--display);font-size:29px;font-weight:400;letter-spacing:-.005em}
+.prose{max-width:66ch;color:var(--ink-2)}
+.prose p{margin:12px 0}
+.prose strong{color:var(--ink);font-weight:600}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:30px;margin-top:26px}
+
+/* ---------- decomposition ---------- */
+.decomp{margin-top:26px;border:1px solid var(--rule);background:var(--panel)}
+.drow{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid var(--rule-soft);
+  flex-wrap:wrap}
+.drow:last-child{border-bottom:0}
+.drow .lab{flex:1 1 170px;font-size:13.5px}
+.drow .bar{flex:2 1 200px;height:9px;background:var(--null-soft);position:relative;min-width:120px}
+.drow .bar i{position:absolute;inset-block:0;left:0;display:block}
+.drow .val{font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums;
+  min-width:78px;text-align:right}
+.b-batch i{background:var(--batch)} .b-share i{background:var(--share)}
+.b-null i{background:var(--null)}
+
+/* ---------- explorer ---------- */
+.tool{margin-top:26px;border:1px solid var(--rule);background:var(--panel)}
+.tbar{display:flex;gap:18px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--rule);
+  flex-wrap:wrap}
+.tbar label{font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;
+  font-weight:600}
+.seg{display:flex;border:1px solid var(--rule)}
+.seg button{font-family:var(--mono);font-size:13px;padding:5px 11px;background:transparent;
+  color:var(--ink-2);border:0;border-right:1px solid var(--rule);cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--ground)}
+.seg button:focus-visible{outline:2px solid var(--share);outline-offset:-2px}
+.chart{padding:16px 18px 20px}
+.chart svg{display:block;width:100%;height:auto}
+.note{padding:0 18px 16px;font-size:12.5px;color:var(--muted);max-width:68ch}
+
+/* ---------- tables ---------- */
+.tscroll{overflow-x:auto;margin-top:22px;border:1px solid var(--rule);background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:560px}
+th,td{padding:9px 13px;text-align:right;border-bottom:1px solid var(--rule-soft);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+  font-weight:600;border-bottom:1px solid var(--rule)}
+tbody tr:last-child td{border-bottom:0}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+tr.dim td{color:var(--null)}
+td .best{color:var(--share);font-weight:500}
+.dag{color:var(--muted);font-size:11px;vertical-align:super}
+
+/* ---------- null findings ---------- */
+.nulls{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:1px;
+  margin-top:26px;background:var(--rule);border:1px solid var(--rule)}
+.null-card{background:var(--panel);padding:18px 20px}
+.null-card .n{font-family:var(--mono);font-size:25px;color:var(--null);font-weight:500;
+  font-variant-numeric:tabular-nums}
+.null-card h3{font-size:14px;margin-top:9px;font-weight:600}
+.null-card p{margin:7px 0 0;font-size:13px;color:var(--ink-2)}
+
+
+/* ---------- demos ---------- */
+.demo{margin-top:26px;border:1px solid var(--rule);background:var(--panel)}
+.dpick{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid var(--rule);
+  overflow-x:auto}
+.dpick button{padding:0;border:1px solid var(--rule);background:none;cursor:pointer;
+  line-height:0;flex:0 0 auto}
+.dpick button img{width:62px;height:44px;object-fit:cover;display:block;opacity:.55}
+.dpick button[aria-pressed="true"]{border-color:var(--share)}
+.dpick button[aria-pressed="true"] img{opacity:1}
+.dpick button:focus-visible{outline:2px solid var(--share);outline-offset:2px}
+.dbody{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:22px;padding:18px 16px}
+@media (max-width:640px){.dbody{grid-template-columns:1fr}}
+.dbody>figure{margin:0}
+.dbody img.shot{width:100%;max-width:100%;display:block;border:1px solid var(--rule)}
+.dbody figcaption{margin-top:8px;font-size:12px;color:var(--muted)}
+.qlist{display:flex;flex-direction:column;gap:14px;min-width:0}
+.q{border-bottom:1px solid var(--rule-soft);padding-bottom:12px}
+.qlist .q:last-child{border-bottom:0;padding-bottom:0}
+.q .qt{font-size:13.5px;margin-bottom:7px}
+.opt{display:grid;grid-template-columns:minmax(64px,auto) minmax(60px,1fr) 46px;
+  gap:9px;align-items:center;font-size:12.5px;padding:1.5px 0}
+.opt .ol{color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.opt .ob{height:7px;background:var(--null-soft);position:relative}
+.opt .ob i{position:absolute;inset-block:0;left:0;background:var(--null)}
+.opt.top .ob i{background:var(--share)}
+.opt.gold .ol{color:var(--ink);font-weight:600}
+.opt .op{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;
+  color:var(--ink-2)}
+.tri{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;
+  padding:16px;border-top:1px solid var(--rule-soft)}
+.tri figure{margin:0}
+.tri img{width:100%;display:block;border:1px solid var(--rule)}
+.tri .cap{margin-top:7px;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);font-weight:600}
+.tri .sig{display:flex;justify-content:space-between;gap:8px;font-size:12px;margin-top:5px;
+  font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tri .sig b{font-weight:500}
+.tri .wrong{color:var(--share)}
+.triq{padding:14px 16px 0;font-size:13.5px}
+.triq .mono{color:var(--ink-2)}
+
+/* ---------- footer ---------- */
+footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
+.flinks{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:18px}
+.flinks a{font-size:14px;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule)}
+.flinks a:hover{border-bottom-color:var(--share)}
+.caveat{border-left:2px solid var(--share);padding-left:14px;max-width:64ch}
+@media (prefers-reduced-motion: no-preference){
+  .drow .bar i{transition:width .45s cubic-bezier(.2,.7,.3,1)}
+}
+</style>
+
+<header>
+  <div class="wrap hrow">
+    <div class="mark">Visual <em>Jev</em></div>
+    <nav>
+      <a href="#workload">Workload</a>
+      <a href="#quality">Quality</a>
+      <a href="#cost">Cost</a>
+      <a href="#demo">Demo</a>
+      <a href="#evidence">Evidence</a>
+      <a href="#explorer">Latency</a>
+      <a href="#nulls">What didn't work</a>
+      <a href="#numbers">Numbers</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="hero">
+  <h1>One image. Many questions. <em>The win is in the execution.</em></h1>
+  <p class="lede">Software asks a vision–language model for a decision about an image rather than for prose,
+  and usually asks several questions at once. We post-train a 4B backbone for that interface and measure
+  both halves of it — what the training buys, and what the serving path buys. One of those answers is a
+  zero, and it is the more useful half.</p>
+  <div class="pair">
+    <div class="cell win">
+      <div class="n">__TOTAL__&times;</div>
+      <div class="k">faster per question at <span class="mono">N=32</span>, shared prefix and batched
+        branches against full repetition — with accuracy identical across paths.</div>
+    </div>
+    <div class="cell zero">
+      <div class="n">__HEAD__</div>
+      <div class="k">macro accuracy from the decision head, against ordinary answer supervision through
+        the model's own LM head on the same data and budget.</div>
+    </div>
+  </div>
+</div>
+
+<section id="workload">
+  <div class="shead"><span class="eyebrow">The workload</span><h2>Ask once, answer many</h2></div>
+  <div class="prose">
+    <p>An instance is one image, one public text context, and a set of questions defined at request time.
+    Each question is answered independently — it may read the image, the context and its own text, and
+    never the other questions or their answers. That isolation is what licenses everything downstream:
+    the image and the shared prefix are computed once, and the question branches run as one batch.</p>
+    <p>Two output types. <strong>Choice</strong> returns a distribution over a candidate set supplied with
+    the request. <strong>Claim</strong> returns supported / contradicted / not-determined. Four benchmarks,
+    two of which post-training never sees.</p>
+  </div>
+</section>
+
+<section id="quality">
+  <div class="shead"><span class="eyebrow">Axis one</span><h2>What training buys</h2></div>
+  <div class="prose">
+    <p>Post-training for this interface lifts the equal-weight macro average over four benchmarks from
+    <span class="mono">__M_B1__</span> to <span class="mono">__M_B2K__</span>. The gain is concentrated on
+    the two families in the training mix; on the two held-out tasks it is small.</p>
+    <p>What does <em>not</em> show up is any contribution from the decision head. Answer SFT — same items,
+    same steps, same prompts, same readout position, ordinary next-token cross entropy through the LM head
+    — reaches <span class="mono">__M_B2K__</span>. Three seeds each, ranges overlapping completely.</p>
+  </div>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>System</th><th>Readout</th><th>Seeds</th><th>GQA</th><th>SNLI-VE</th>
+        <th>TextVQA<span class="dag">&dagger;</span></th><th>TallyQA<span class="dag">&dagger;</span></th><th>Macro</th></tr></thead>
+      <tbody id="qtable"></tbody>
+    </table>
+  </div>
+  <p class="note" style="padding-inline:0">&dagger; never seen in post-training. Macro weights the four
+  benchmarks equally so the largest cannot carry it.</p>
+</section>
+
+<section id="cost">
+  <div class="shead"><span class="eyebrow">Axis two</span><h2>What the serving path buys</h2></div>
+  <div class="prose">
+    <p>Comparing a shared, batched path against an independent, serial one conflates two mechanisms. Cross
+    them and both turn out to be real — and their product, not either one, is the headline.</p>
+  </div>
+  <div class="decomp" id="decomp"></div>
+  <div class="prose" style="margin-top:22px">
+    <p>Two things that surprised us. Emitting an answer token costs nothing against reading a head once
+    batching and sharing are matched (<span class="mono">__MS_GEN__ ms</span> against
+    <span class="mono">__MS_SHARED__ ms</span>), so the advantage is the shared prefix, not the absence of
+    a decode. And at <span class="mono">N=1</span> sharing is a <em>loss</em>
+    (<span class="mono">__MS_N1_SHARED__ ms</span> against <span class="mono">__MS_N1_IND__ ms</span>) —
+    the gain is a property of the workload, not of the method.</p>
+  </div>
+</section>
+
+<section id="explorer">
+  <div class="shead"><span class="eyebrow">Measured</span><h2>Latency explorer</h2></div>
+  <div class="prose"><p>Warm per-question latency from the sweep in the paper. CUDA-event timing, cold
+  runs discarded, one RTX&nbsp;5090, <span class="mono">bfloat16</span>, 196 visual tokens.</p></div>
+  <div class="tool">
+    <div class="tbar">
+      <div><label for="nseg">Questions per image</label>
+        <div class="seg" id="nseg" role="group" aria-label="Questions per image"></div></div>
+      <div><label for="mseg">Backbone</label>
+        <div class="seg" id="mseg" role="group" aria-label="Backbone"></div></div>
+    </div>
+    <div class="chart"><svg id="chart" viewBox="0 0 720 300" role="img"
+      aria-label="Per-question latency by execution path"></svg></div>
+    <p class="note" id="cnote"></p>
+  </div>
+</section>
+
+
+<section id="demo">
+  <div class="shead"><span class="eyebrow">Real output</span><h2>One image, six questions</h2></div>
+  <div class="prose">
+    <p>Held-out GQA images with the questions that naturally occur on them, and the
+    probabilities the model actually returned. Each question is answered independently —
+    it never sees the others — which is what lets all six share one visual encoding.
+    The gold answer is in bold.</p>
+  </div>
+  <div class="demo">
+    <div class="dpick" id="dpick" role="group" aria-label="Choose an image"></div>
+    <div class="dbody">
+      <figure>
+        <img class="shot" id="dimg" alt="Held-out image the questions are asked about">
+        <figcaption id="dcap"></figcaption>
+      </figure>
+      <div class="qlist" id="dqs"></div>
+    </div>
+  </div>
+</section>
+
+<section id="evidence">
+  <div class="shead"><span class="eyebrow">The appendix, visibly</span>
+    <h2>Confident without the evidence</h2></div>
+  <div class="prose">
+    <p>Each row is one judgement under three conditions: the original image, the same
+    image with the region the question depends on destroyed, and a control with an
+    equal-area region elsewhere destroyed. All three were chosen because the model
+    answers correctly with the evidence and incorrectly without it.</p>
+    <p>Watch the two signals diverge. <strong>Confidence barely moves</strong> even where
+    the answer becomes wrong — it is still above 0.6 on every one of these. The
+    <strong>sufficiency</strong> output, trained on these pairs, collapses instead.</p>
+    <p>It is not a clean instrument, and the rows show that rather than hide it: on the
+    first, sufficiency also drops on the control, where the question's evidence is
+    untouched. The paper measures how often that happens — the drop on the relevant arm
+    is about five times the drop on the control, not infinitely more.</p>
+  </div>
+  <div class="demo" id="triples"></div>
+</section>
+
+<section id="nulls">
+  <div class="shead"><span class="eyebrow">Reported anyway</span><h2>What didn't work</h2></div>
+  <div class="prose">
+    <p>Four things we built or expected that the measurements did not support. They are here because each
+    one changes what a reader should do next.</p>
+  </div>
+  <div class="nulls">
+    <div class="null-card">
+      <div class="n">__HEAD__</div>
+      <h3>The decision head</h3>
+      <p>Against answer SFT at matched data and budget, on four benchmarks and three seeds. The interface
+      is worth building; the head on top of it is not what makes it work.</p>
+    </div>
+    <div class="null-card">
+      <div class="n">__SUFF__</div>
+      <h3>Evidence-sufficiency objectives</h3>
+      <p>The output detects removed evidence far better than confidence does — and still costs macro
+      accuracy. Knowing evidence is missing is not knowing an answer is wrong.</p>
+    </div>
+    <div class="null-card">
+      <div class="n">__SCALE__</div>
+      <h3>Twice the parameters</h3>
+      <p>8B against 4B, same recipe and GPU, for <span class="mono">+__SCALE_LAT__%</span> latency and
+      <span class="mono">+__SCALE_MEM__%</span> memory. Barely outside seed noise, and an order of
+      magnitude less than the serving path.</p>
+    </div>
+    <div class="null-card">
+      <div class="n">__SLOT__</div>
+      <h3>A trap, not a result</h3>
+      <p>Train a slot-indexed head only on <span class="mono">K&le;4</span> and slots 4+ never get a
+      gradient. The held-out benchmark then reads as a collapse in generalisation. It isn't one — it is
+      the data.</p>
+    </div>
+  </div>
+</section>
+
+<section id="numbers">
+  <div class="shead"><span class="eyebrow">Reference</span><h2>Execution paths at <span class="mono">N=32</span></h2></div>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>Path</th><th>Reuses</th><th>Batches</th><th>ms / question</th>
+        <th>Questions / s</th><th>Peak GiB</th></tr></thead>
+      <tbody id="ptable"></tbody>
+    </table>
+  </div>
+  <p class="note" style="padding-inline:0">Accuracy is identical across every readout path; the residual
+  numerical difference is <span class="mono">bfloat16</span> arithmetic, and vanishes in float32.</p>
+</section>
+
+<footer class="wrap">
+  <div class="flinks">
+    <a href="#">Paper (PDF)</a>
+    <a href="#">Code</a>
+    <a href="#">Raw predictions</a>
+  </div>
+  <p class="caveat">Under anonymous review. Links are placeholders until the submission is de-anonymised —
+  publishing this page with the paper attached would break anonymity.</p>
+</footer>
+</div>
+
+<script>
+const D = __DATA__;
+const DEMOS = __DEMOS__;
+const PATHS = [
+  ["independent","independent","—","—","null"],
+  ["independent_batch","independent","—","yes","batch"],
+  ["vision_cache","vision cache","vision","—","null"],
+  ["vision_cache_batch","vision cache","vision","yes","batch"],
+  ["prefix_share","prefix share","prefix","—","null"],
+  ["prefix_share_batch","prefix share","prefix","yes","share"],
+  ["gen_one_token_each","generate, 1 token/q","—","—","null"],
+  ["gen_compact_joint","generate, joint","—","—","null"]
+];
+const pct = v => (v*100).toFixed(1) + "%";
+const f3  = v => v.toFixed(3);
+
+/* ---- quality table ---- */
+(function(){
+  const rows = [
+    ["B1","4B untrained","LM"],["a2","4B answer SFT","LM"],
+    ["b2k","4B decision CE","head"],["mk","+ sufficiency","head"],
+    ["B1_8b","8B untrained","LM"],["a2_8b","8B answer SFT","LM"],
+    ["b2","4B decision CE, K≤4","head"]
+  ];
+  const cols = ["GQA-Choice","SNLI-VE","TextVQA-Choice","TallyQA-Choice"];
+  const best = Math.max(...rows.map(r => D.bench[r[0]] ? D.bench[r[0]].macro : 0));
+  document.getElementById("qtable").innerHTML = rows.map(([k,lab,ro]) => {
+    const b = D.bench[k]; if (!b) return "";
+    const dim = (k === "b2" || k === "mk") ? ' class="dim"' : "";
+    const cells = cols.map(c => `<td class="num">${f3(b[c])}</td>`).join("");
+    const m = b.macro === best ? `<span class="best">${f3(b.macro)}</span>` : f3(b.macro);
+    return `<tr${dim}><td>${lab}</td><td>${ro}</td><td class="num">${b.seeds}</td>${cells}<td class="num">${m}</td></tr>`;
+  }).join("");
+})();
+
+/* ---- decomposition bars ---- */
+(function(){
+  const f = D.facts, max = f.ms_ind;
+  const rows = [
+    ["Independent, serial", f.ms_ind, "b-null", `${f.ms_ind} ms`],
+    ["+ batching", f.ms_batch_placeholder || null, "b-batch", null],
+    ["Shared prefix + batched", f.ms_shared, "b-share", `${f.ms_shared} ms`]
+  ];
+  const indb = D.sweep4.find(r => r.path === "independent_batch" && r.N === 32).ms;
+  const spec = [
+    ["Independent, serial", f.ms_ind, "b-null"],
+    ["Batched, nothing reused", indb, "b-batch"],
+    ["Shared prefix, batched", f.ms_shared, "b-share"]
+  ];
+  document.getElementById("decomp").innerHTML = spec.map(([lab,ms,cls]) =>
+    `<div class="drow"><span class="lab">${lab}</span>
+     <span class="bar ${cls}"><i style="width:${(ms/max*100).toFixed(1)}%"></i></span>
+     <span class="val">${ms} ms</span></div>`).join("") +
+    `<div class="drow"><span class="lab" style="color:var(--muted)">Attribution</span>
+     <span class="lab mono" style="flex:3 1 240px">
+       ${f.total}× total &nbsp;=&nbsp; <span style="color:var(--batch)">${f.batching}× batching</span>
+       &nbsp;×&nbsp; <span style="color:var(--share)">${f.sharing}× sharing</span></span></div>`;
+})();
+
+/* ---- latency explorer ---- */
+const state = { n: 32, model: "sweep4" };
+function seg(id, items, key){
+  const el = document.getElementById(id);
+  el.innerHTML = items.map(([v,l]) =>
+    `<button type="button" data-v="${v}" aria-pressed="${state[key]==v}">${l}</button>`).join("");
+  el.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    state[key] = key === "n" ? +b.dataset.v : b.dataset.v;
+    [...el.children].forEach(c => c.setAttribute("aria-pressed", String(
+      (key === "n" ? +c.dataset.v : c.dataset.v) === state[key])));
+    draw();
+  });
+}
+function draw(){
+  const sw = D[state.model].filter(r => r.N === state.n);
+  const rows = PATHS.map(([k,lab,reuse,batch,tone]) => {
+    const r = sw.find(x => x.path === k); return r ? {lab, ms: r.ms, tone} : null;
+  }).filter(Boolean).sort((a,b) => a.ms - b.ms);
+  const W = 720, rowH = __SCALE_LAT__, padL = 176, padR = 74, padT = 26, padB = 30;
+  const H = padT + rows.length * rowH + padB;
+  const max = Math.max(...rows.map(r => r.ms));
+  const scale = v => padL + (v / max) * (W - padL - padR);
+  const tone = t => t === "batch" ? "var(--batch)" : t === "share" ? "var(--share)" : "var(--null)";
+  const ticks = [0, max/2, max].map(v => Math.round(v));
+  let s = `<g font-family="var(--mono)" font-size="11" fill="var(--muted)">` +
+    ticks.map(t => `<text x="${scale(t)}" y="14" text-anchor="middle">${t}</text>
+      <line x1="${scale(t)}" y1="20" x2="${scale(t)}" y2="${H-padB+4}" stroke="var(--rule-soft)" stroke-width="1"/>`).join("") +
+    `<text x="${(padL+W-padR)/2}" y="${H-6}" text-anchor="middle">milliseconds per question</text></g>`;
+  rows.forEach((r,i) => {
+    const y = padT + i * rowH, bw = Math.max(scale(r.ms) - padL, 2);
+    s += `<text x="${padL-10}" y="${y+14}" text-anchor="end" font-family="var(--sans)" font-size="12.5"
+            fill="var(--ink-2)">${r.lab}</text>
+          <rect x="${padL}" y="${y+4}" width="${bw}" height="15" fill="${tone(r.tone)}"/>
+          <text x="${padL+bw+8}" y="${y+16}" font-family="var(--mono)" font-size="12"
+            fill="var(--ink)">${r.ms}</text>`;
+  });
+  document.getElementById("chart").setAttribute("viewBox", `0 0 ${W} ${H}`);
+  document.getElementById("chart").innerHTML = s;
+  const fast = rows[0], slow = rows[rows.length-1];
+  document.getElementById("cnote").textContent =
+    `${state.model === "sweep4" ? "Qwen3-VL-4B" : "Qwen3-VL-8B"}, N=${state.n}: ` +
+    `${fast.lab} at ${fast.ms} ms against ${slow.lab} at ${slow.ms} ms — ` +
+    `${(slow.ms/fast.ms).toFixed(1)}× between the best and worst path.`;
+}
+seg("nseg", [[1,"1"],[2,"2"],[4,"4"],[8,"8"],[16,"16"],[32,"32"]], "n");
+seg("mseg", [["sweep4","4B"],["sweep8","8B"]], "model");
+draw();
+
+
+/* ---- demo: one image, many questions ---- */
+(function(){
+  const M = (DEMOS.multi || []);
+  if (!M.length){ document.getElementById("demo").remove(); return; }
+  let cur = 0;
+  const pick = document.getElementById("dpick");
+  pick.innerHTML = M.map((m,i) =>
+    `<button type="button" data-i="${i}" aria-pressed="${i===0}"
+      aria-label="Image ${i+1}"><img src="${m.img}" alt=""></button>`).join("");
+  pick.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    cur = +b.dataset.i;
+    [...pick.children].forEach((c,i) => c.setAttribute("aria-pressed", String(i===cur)));
+    render();
+  });
+  function render(){
+    const m = M[cur];
+    document.getElementById("dimg").src = m.img;
+    document.getElementById("dcap").textContent =
+      `${m.n_total} questions occur on this image; ${m.qs.length} shown.`;
+    document.getElementById("dqs").innerHTML = m.qs.map(q => {
+      const top = q.p.indexOf(Math.max(...q.p));
+      const opts = q.opts.map((o,i) => {
+        const cls = [i===top ? "top" : "", i===q.gold ? "gold" : ""].join(" ").trim();
+        return `<div class="opt ${cls}"><span class="ol">${o}</span>
+          <span class="ob"><i style="width:${(q.p[i]*100).toFixed(1)}%"></i></span>
+          <span class="op">${q.p[i].toFixed(2)}</span></div>`;
+      }).join("");
+      return `<div class="q"><div class="qt">${q.q}</div>${opts}</div>`;
+    }).join("");
+  }
+  render();
+})();
+
+/* ---- demo: evidence interventions ---- */
+(function(){
+  const T = (DEMOS.triples || []);
+  const host = document.getElementById("triples");
+  if (!T.length){ document.getElementById("evidence").remove(); return; }
+  const LABEL = {original:"Original", relevant:"Evidence removed", control:"Control, equal area"};
+  host.innerHTML = T.map(t => {
+    const cells = ["original","relevant","control"].map(a => {
+      const s = t.arms[a], wrong = s.pick !== t.gold;
+      const suff = s.suff == null ? "" :
+        `<span>sufficiency <b>${s.suff.toFixed(2)}</b></span>`;
+      return `<figure><img src="${s.img}" alt="${LABEL[a]}">
+        <div class="cap">${LABEL[a]}</div>
+        <div class="sig"><span class="${wrong?'wrong':''}">conf <b>${s.conf.toFixed(2)}</b></span>${suff}</div>
+        <div class="sig"><span class="${wrong?'wrong':''}">${t.opts[s.pick]}${wrong?" ✗":""}</span></div>
+      </figure>`;
+    }).join("");
+    return `<div class="triq">${t.q} <span class="mono">— gold: ${t.opts[t.gold]}</span></div>
+            <div class="tri">${cells}</div>`;
+  }).join("");
+})();
+
+/* ---- path table ---- */
+(function(){
+  const sw = D.sweep4.filter(r => r.N === 32);
+  document.getElementById("ptable").innerHTML = PATHS.map(([k,lab,reuse,batch]) => {
+    const r = sw.find(x => x.path === k); if (!r) return "";
+    const dim = k.startsWith("gen_") ? ' class="dim"' : "";
+    const v = k === "prefix_share_batch" ? `<span class="best">${r.ms}</span>` : r.ms;
+    return `<tr${dim}><td>${lab}</td><td>${reuse}</td><td>${batch}</td>
+      <td class="num">${v}</td><td class="num">${Math.round(1000/r.ms)}</td>
+      <td class="num">${r.gib.toFixed(1)}</td></tr>`;
+  }).join("");
+})();
+</script>
