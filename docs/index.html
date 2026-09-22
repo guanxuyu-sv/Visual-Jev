@@ -163,6 +163,23 @@ td .best{color:var(--share);font-weight:500}
 .triq{padding:14px 16px 0;font-size:13.5px}
 .triq .mono{color:var(--ink-2)}
 
+
+/* ---------- ordinary-way comparison ---------- */
+.vs{margin-top:26px;border:1px solid var(--rule);background:var(--panel)}
+.vsrow{display:grid;grid-template-columns:minmax(150px,1.5fr) minmax(90px,3fr) auto;
+  gap:16px;align-items:center;padding:15px 18px;border-bottom:1px solid var(--rule-soft)}
+.vsrow:last-child{border-bottom:0}
+.vsrow .who{min-width:0}
+.vsrow .who b{display:block;font-size:13.5px;font-weight:600}
+.vsrow .who span{font-size:12px;color:var(--muted)}
+.vsrow .track{height:11px;background:var(--null-soft);position:relative;min-width:80px}
+.vsrow .track i{position:absolute;inset-block:0;left:0;background:var(--null)}
+.vsrow.ours .track i{background:var(--share)}
+.vsrow .amt{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:14px;
+  text-align:right;white-space:nowrap}
+.vsrow.ours .amt{color:var(--share);font-weight:500}
+.vsrow .amt em{font-style:normal;color:var(--muted);font-size:12px;display:block}
+
 /* ---------- footer ---------- */
 footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
 .flinks{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:18px}
@@ -182,6 +199,7 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
       <a href="#quality">Quality</a>
       <a href="#cost">Cost</a>
       <a href="#demo">Demo</a>
+      <a href="#ordinary">vs. prompting</a>
       <a href="#evidence">Evidence</a>
       <a href="#explorer">Latency</a>
       <a href="#nulls">What didn't work</a>
@@ -260,6 +278,31 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
     a decode. And at <span class="mono">N=1</span> sharing is a <em>loss</em>
     (<span class="mono">82.9 ms</span> against <span class="mono">48.1 ms</span>) —
     the gain is a property of the workload, not of the method.</p>
+  </div>
+</section>
+
+
+<section id="ordinary">
+  <div class="shead"><span class="eyebrow">Against the ordinary way</span>
+    <h2>What this replaces</h2></div>
+  <div class="prose">
+    <p>Today you would ask a vision–language model these questions by prompting it and
+    reading what it writes — either one request per question, or all of them in one
+    prompt and let it answer in a list. We measured both, on the same GPU, same model,
+    same images and same questions.</p>
+  </div>
+  <div class="vs" id="vs"></div>
+  <div class="prose" style="margin-top:20px">
+    <p>Two honest caveats. The gap is a property of <em>this workload</em> — at
+    <span class="mono">N=1</span> there is no shared context to amortise and the ordinary
+    way wins. And putting every question in one prompt lets them see each other, which
+    is a different task: the answers can condition on one another, for better or worse.</p>
+    <p>On quality the comparable baseline is an off-the-shelf backbone asked to pick
+    among the same candidates: <span class="mono">0.706</span> macro against
+    <span class="mono">0.761</span> after post-training. We did not score the
+    generative paths for accuracy — parsing free text into a choice is a different
+    measurement, and reporting it beside ours would flatter us for their formatting
+    errors.</p>
   </div>
 </section>
 
@@ -437,6 +480,36 @@ const f3  = v => v.toFixed(3);
      <span class="lab mono" style="flex:3 1 240px">
        ${f.total}× total &nbsp;=&nbsp; <span style="color:var(--batch)">${f.batching}× batching</span>
        &nbsp;×&nbsp; <span style="color:var(--share)">${f.sharing}× sharing</span></span></div>`;
+})();
+
+
+/* ---- the ordinary way, at the largest concurrency measured ---- */
+(function(){
+  const nmax = Math.max(...D.sweep4.map(r => r.N));
+  const at = p => D.sweep4.find(r => r.path === p && r.N === nmax).ms;
+  const rows = [
+    ["gen_compact_joint", "All questions in one prompt",
+     "the model writes a list; the questions see each other", false],
+    ["gen_one_token_each", "One request per question",
+     "one prompt each, one token generated", false],
+    ["independent", "One request per question, read the candidates",
+     "no generation, but nothing reused either", false],
+    ["prefix_share_batch", "Visual Jev",
+     "one visual encoding, question branches batched", true]
+  ];
+  const vals = rows.map(r => at(r[0]));
+  const max = Math.max(...vals), best = at("prefix_share_batch");
+  document.getElementById("vs").innerHTML = rows.map(([k, who, sub, ours], i) => {
+    const v = vals[i];
+    const rel = ours ? "" : `<em>${(v / best).toFixed(1)}× slower</em>`;
+    return `<div class="vsrow ${ours ? "ours" : ""}">
+      <span class="who"><b>${who}</b><span>${sub}</span></span>
+      <span class="track"><i style="width:${(v / max * 100).toFixed(1)}%"></i></span>
+      <span class="amt">${v} ms${rel}</span></div>`;
+  }).join("") +
+  `<div class="vsrow"><span class="who" style="color:var(--muted);font-size:12px">
+     Per question, ${nmax} questions on one image, same GPU and precision throughout.
+   </span><span></span><span></span></div>`;
 })();
 
 /* ---- latency explorer ---- */
