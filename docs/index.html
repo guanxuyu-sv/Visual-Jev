@@ -308,8 +308,10 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
 
 <section id="explorer">
   <div class="shead"><span class="eyebrow">Measured</span><h2>Latency explorer</h2></div>
-  <div class="prose"><p>Warm per-question latency from the sweep in the paper. CUDA-event timing, cold
-  runs discarded, one RTX&nbsp;5090, <span class="mono">bfloat16</span>, 196 visual tokens.</p></div>
+  <div class="prose"><p>Warm per-question time from the sweep in the paper. Synchronized wall-clock
+  timing from an in-memory decoded image and extracted records through path return; image decode,
+  record construction and queueing are excluded. Two warm-ups are discarded on one RTX&nbsp;5090,
+  <span class="mono">bfloat16</span>, with 196 visual tokens.</p></div>
   <div class="tool">
     <div class="tbar">
       <div><label for="nseg">Questions per image</label>
@@ -442,9 +444,9 @@ const f3  = v => v.toFixed(3);
 /* ---- quality table ---- */
 (function(){
   const rows = [
-    ["B1","4B untrained","LM"],["a2","4B answer SFT","LM"],
+    ["B1","4B original backbone","LM"],["a2","4B answer SFT","LM"],
     ["b2k","4B decision CE","head"],["mk","+ sufficiency","head"],
-    ["B1_8b","8B untrained","LM"],["a2_8b","8B answer SFT","LM"],
+    ["B1_8b","8B original backbone","LM"],["a2_8b","8B answer SFT","LM"],
     ["b2","4B decision CE, K≤4","head"]
   ];
   const cols = ["GQA-Choice","SNLI-VE","TextVQA-Choice","TallyQA-Choice"];
