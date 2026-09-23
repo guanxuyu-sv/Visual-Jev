@@ -1,4 +1,16 @@
-<title>Visual Jev</title>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Visual Jev extends the Jev decision interface to images: one visual context, independent questions, shared compute. Explore the official paper, code, results, and released model.">
+<meta property="og:title" content="Visual Jev — one image, many decisions">
+<meta property="og:description" content="Official project page for Visual Jev: paper, code, model, examples, and measured results.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://guanxuyu-sv.github.io/Visual-Jev/">
+<meta property="og:image" content="https://guanxuyu-sv.github.io/Visual-Jev/multi_question_inference.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>Visual Jev — Paper, Code &amp; Model</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;450;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -16,21 +28,23 @@
   :root:not([data-theme="light"]){
     color-scheme: dark;
     --ground:#0E1214; --panel:#151A1D; --ink:#E9EDEB; --ink-2:#AEB8BD;
-    --muted:#8__SCALE_LAT__C92; --rule:#262D31; --rule-soft:#1D2326;
+    --muted:#89949A; --rule:#262D31; --rule-soft:#1D2326;
     --batch:#5E9BEA; --share:#F0783E; --null:#7C868C; --null-soft:#1A2023;
   }
 }
 :root[data-theme="dark"]{
   color-scheme: dark;
   --ground:#0E1214; --panel:#151A1D; --ink:#E9EDEB; --ink-2:#AEB8BD;
-  --muted:#8__SCALE_LAT__C92; --rule:#262D31; --rule-soft:#1D2326;
+  --muted:#89949A; --rule:#262D31; --rule-soft:#1D2326;
   --batch:#5E9BEA; --share:#F0783E; --null:#7C868C; --null-soft:#1A2023;
 }
 *{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
 body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
   font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
 .wrap{max-width:1040px;margin:0 auto;padding-inline:20px}
 a{color:inherit}
+a:focus-visible{outline:2px solid var(--share);outline-offset:3px}
 h1,h2,h3{text-wrap:balance;margin:0}
 .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
 .eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
@@ -45,6 +59,7 @@ header{border-bottom:1px solid var(--rule);position:sticky;top:0;background:var(
 nav{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--ink-2)}
 nav a{text-decoration:none;padding-block:2px;border-bottom:1px solid transparent}
 nav a:hover,nav a:focus-visible{border-bottom-color:var(--ink)}
+.nav-action{color:var(--share);font-weight:600}
 
 /* ---------- hero ---------- */
 .hero{padding-block:28px 24px;border-bottom:1px solid var(--rule)}
@@ -58,6 +73,7 @@ nav a:hover,nav a:focus-visible{border-bottom-color:var(--ink)}
 .hero-demo{margin:0;border:1px solid var(--rule);background:var(--panel)}
 .hero-demo img{display:block;width:100%;height:auto}
 .hero-demo figcaption{padding:7px 10px;border-top:1px solid var(--rule);font-size:10.5px;line-height:1.35;color:var(--muted)}
+.hero .eyebrow{margin:0 0 10px;color:var(--share)}
 .pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;
   margin-top:18px;background:var(--rule);border:1px solid var(--rule)}
 .cell{background:var(--panel);padding:12px 16px}
@@ -82,6 +98,26 @@ section{padding-block:46px;border-bottom:1px solid var(--rule)}
 .prose p{margin:12px 0}
 .prose strong{color:var(--ink);font-weight:600}
 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:30px;margin-top:26px}
+.section-intro{max-width:76ch}
+.paper-figure{margin:24px 0 0;border:1px solid var(--rule);background:#fff;padding:14px}
+.paper-figure img{display:block;width:100%;height:auto;object-fit:contain}
+.paper-figure figcaption{font-size:12px;line-height:1.5;color:#48535a;margin-top:10px}
+.figure-link{font-weight:600;text-underline-offset:3px}
+.method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);margin-top:14px}
+.method-grid div{background:var(--panel);padding:16px}
+.method-grid strong{display:block;font-size:13px;color:var(--ink)}
+.method-grid p{font-size:12.5px;color:var(--ink-2);margin:5px 0 0}
+.figure-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:18px;align-items:start}
+.figure-grid .paper-figure{height:100%}
+.callout{border-left:3px solid var(--share);background:var(--panel);padding:14px 18px;
+  margin-top:20px;color:var(--ink-2);font-size:13.5px;max-width:74ch}
+.callout strong{color:var(--ink)}
+.try-card{margin-top:20px;border:1px solid var(--rule);background:var(--panel);padding:20px}
+.try-card pre{overflow-x:auto;background:#172027;color:#f2f5f3;padding:15px;margin:14px 0;font:12px/1.65 var(--mono)}
+.try-card p{margin:8px 0;color:var(--ink-2);font-size:13px}
+.try-card a{text-underline-offset:3px}
+@media(max-width:700px){.method-grid,.figure-grid{grid-template-columns:1fr}}
 
 /* ---------- decomposition ---------- */
 .decomp{margin-top:26px;border:1px solid var(--rule);background:var(--panel)}
@@ -204,43 +240,41 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
   .drow .bar i{transition:width .45s cubic-bezier(.2,.7,.3,1)}
 }
 </style>
+</head>
+<body>
 
 <header>
   <div class="wrap hrow">
-    <div class="mark">Visual <em>Jev</em></div>
+    <a class="mark" href="#top" aria-label="Visual Jev home" style="text-decoration:none">Visual <em>Jev</em></a>
     <nav>
-      <a href="#workload">Workload</a>
-      <a href="#live-demo">See it run</a>
-      <a href="#quality">Quality</a>
-      <a href="#cost">Cost</a>
-      <a href="#demo">Demo</a>
-      <a href="#ordinary">vs. prompting</a>
-      <a href="#evidence">Evidence</a>
-      <a href="#explorer">Latency</a>
-      <a href="#nulls">What didn't work</a>
-      <a href="#numbers">Numbers</a>
+      <a href="#method">Method</a>
+      <a href="#quality">Results</a>
+      <a href="#cost">Speed</a>
+      <a href="#demo">Examples</a>
+      <a class="nav-action" href="#try">Try the model ↗</a>
     </nav>
   </div>
 </header>
 
 <div class="wrap">
 
-<div class="hero">
+<div class="hero" id="top">
   <div class="hero-top">
     <div>
+      <p class="eyebrow">Official paper · code · released model</p>
       <h1>One image. Many questions. <em>Shared compute.</em></h1>
       <p class="lede">Visual Jev scores answer choices from one image and shared context. Ask independent
       questions together; the model reuses the common prefix and batches the branches.</p>
       <div class="hero-links">
-        <a href="https://github.com/guanxuyu-sv/Visual-Jev">GitHub repo</a>
-        <a href="https://arxiv.org/abs/2609.25845">Paper</a>
-        <a href="https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft">Hugging Face model</a>
+        <a href="https://github.com/guanxuyu-sv/Visual-Jev">⌘ GitHub code</a>
+        <a href="https://arxiv.org/abs/2609.25845">↗ Paper</a>
+        <a href="https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft">◎ Hugging Face model</a>
       </div>
     </div>
     <figure class="hero-demo" id="live-demo">
       <picture>
         <source media="(prefers-reduced-motion: reduce)" srcset="multi_question_inference.png">
-        <img src="multi_question_inference.gif" alt="One image and shared text are cached, then six questions run in parallel. The incorrect-question option catches a false person premise.">
+        <img src="multi_question_inference.gif" width="1440" height="880" alt="One image and shared text are cached, then six questions run in parallel. The incorrect-question option catches a false person premise.">
       </picture>
       <figcaption>Six independent questions share one prefix. The invalid-premise option gets 0.966 for the dog/person mismatch.</figcaption>
     </figure>
@@ -259,21 +293,27 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
   </div>
 </div>
 
-<section id="workload">
-  <div class="shead"><span class="eyebrow">The workload</span><h2>Ask once, answer many</h2></div>
+<section id="method">
+  <div class="shead"><span class="eyebrow">01 / Method</span><h2>One shared input, isolated decisions</h2></div>
   <div class="prose">
-    <p>An instance is one image, one public text context, and a set of questions defined at request time.
-    Each question is answered independently — it may read the image, the context and its own text, and
-    never the other questions or their answers. That isolation is what licenses everything downstream:
-    the image and the shared prefix are computed once, and the question branches run as one batch.</p>
-    <p>Two output types. <strong>Choice</strong> returns a distribution over a candidate set supplied with
-    the request. <strong>Claim</strong> returns supported / contradicted / not-determined. Four benchmarks,
-    two of which post-training never sees.</p>
+    <p>Visual Jev extends the Jev decision interface to vision. Each request supplies an image, optional shared
+    text, and independent questions. The image and public prefix are encoded once; the question branches run
+    together and cannot read each other's answers.</p>
   </div>
+  <figure class="paper-figure">
+    <img src="architecture.png" width="1757" height="459" alt="Architecture: image and public context form a cached shared prefix, independent question branches run as a batch, and the existing LM head scores their candidate answers" loading="lazy">
+    <figcaption>Architecture from the paper. <a class="figure-link" href="architecture.png">View full size ↗</a></figcaption>
+  </figure>
+  <div class="method-grid">
+    <div><strong>Encode once</strong><p>The image and common text become a cached prefix.</p></div>
+    <div><strong>Branch independently</strong><p>Each question sees its own instruction and choices, then runs in the same batch.</p></div>
+    <div><strong>Use the LM head</strong><p>Candidate-token scores become a probability distribution; no new linear head is needed.</p></div>
+  </div>
+  <p class="note" style="padding:13px 0 0">The paper evaluates <strong>choice</strong> decisions and three-way <strong>claim</strong> judgments. The released quickstart currently handles choice questions.</p>
 </section>
 
 <section id="quality">
-  <div class="shead"><span class="eyebrow">Axis one</span><h2>What training buys</h2></div>
+  <div class="shead"><span class="eyebrow">02 / Accuracy</span><h2>Fine-tuning helps. A new head does not.</h2></div>
   <div class="prose">
     <p>Post-training for this interface lifts the equal-weight macro average over four benchmarks from
     <span class="mono">__M_B1__</span> to <span class="mono">__M_B2K__</span>. The gain is concentrated on
@@ -282,6 +322,9 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
     same steps, same prompts, same readout position, ordinary next-token cross entropy through the LM head
     — reaches <span class="mono">__M_B2K__</span>. Three seeds each, ranges overlapping completely.</p>
   </div>
+  <div class="callout"><strong>Recommended system:</strong> answer-supervised 4B LoRA with the backbone's
+  existing LM head. The matched decision-head control reaches the same <span class="mono">__M_B2K__</span>
+  macro average.</div>
   <div class="tscroll">
     <table>
       <thead><tr><th>System</th><th>Readout</th><th>Seeds</th><th>GQA</th><th>SNLI-VE</th>
@@ -294,20 +337,28 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
 </section>
 
 <section id="cost">
-  <div class="shead"><span class="eyebrow">Axis two</span><h2>What the serving path buys</h2></div>
+  <div class="shead"><span class="eyebrow">03 / Throughput</span><h2>The gain appears when questions share an image</h2></div>
   <div class="prose">
-    <p>Comparing a shared, batched path against an independent, serial one conflates two mechanisms. Cross
-    them and both turn out to be real — and their product, not either one, is the headline.</p>
+    <p>At 32 questions, shared-prefix batching takes <span class="mono">__MS_SHARED__ ms</span> per question
+    on an amortized basis, versus <span class="mono">__MS_IND__ ms</span> for independent serial runs. Both
+    batching and prefix reuse contribute to the <span class="mono">__TOTAL__×</span> difference.</p>
   </div>
   <div class="decomp" id="decomp"></div>
-  <div class="prose" style="margin-top:22px">
-    <p>Two things that surprised us. Emitting an answer token costs nothing against reading a head once
-    batching and sharing are matched (<span class="mono">__MS_GEN__ ms</span> against
-    <span class="mono">__MS_SHARED__ ms</span>), so the advantage is the shared prefix, not the absence of
-    a decode. And at <span class="mono">N=1</span> sharing is a <em>loss</em>
-    (<span class="mono">__MS_N1_SHARED__ ms</span> against <span class="mono">__MS_N1_IND__ ms</span>) —
-    the gain is a property of the workload, not of the method.</p>
+  <div class="figure-grid">
+    <figure class="paper-figure"><img src="paper_frontier.png" width="1134" height="550" loading="lazy"
+      alt="Paper figure comparing macro accuracy and amortized time at one and 32 questions for 4B and 8B original and fine-tuned models">
+      <figcaption><strong>Accuracy × cost.</strong> Training moves points up; sharing and batching move them left when N=32.
+      <a class="figure-link" href="paper_frontier.png">View full size ↗</a></figcaption></figure>
+    <figure class="paper-figure"><img src="paper_sweep.png" width="592" height="467" loading="lazy"
+      alt="Paper figure showing amortized milliseconds per question as more questions share the image, with shared prefix batching improving most">
+      <figcaption><strong>Concurrency sweep.</strong> The advantage grows as more independent questions share an image.
+      <a class="figure-link" href="paper_sweep.png">View full size ↗</a></figcaption></figure>
   </div>
+  <div class="callout"><strong>Interpretation:</strong> 5.7 ms is the 32-question batch time divided by 32;
+  it is not the response latency of a single request. At <span class="mono">N=1</span>, sharing takes
+  <span class="mono">__MS_N1_SHARED__ ms</span> versus <span class="mono">__MS_N1_IND__ ms</span> independently.
+  The 4B backbone is also faster in absolute time than the matched 8B backbone; that model-size effect
+  is separate from the sharing gain.</div>
 </section>
 
 
@@ -354,6 +405,20 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
   </div>
 </section>
 
+<section id="try">
+  <div class="shead"><span class="eyebrow">Run it</span><h2>Try the released 4B adapter</h2></div>
+  <div class="prose"><p>Use the included bottle image and six-question request. The runner downloads
+  the Qwen3-VL-4B backbone and answer-supervised LoRA adapter on first use. It supports Apple Silicon MPS and CUDA.</p></div>
+  <div class="try-card">
+    <p>After installing the dependencies in the <a href="https://github.com/guanxuyu-sv/Visual-Jev#try-the-released-model">quickstart guide</a>, run from the repository root:</p>
+    <pre><code>python code/examples/quickstart.py \
+  --image assets/figures/demo_bottle.jpg \
+  --request-file code/examples/bottle_questions.json --device auto</code></pre>
+    <p>It returns a choice and probabilities for each question. Choices come from the request; a missing
+    correct choice is not invented by the model. See the <a href="https://github.com/guanxuyu-sv/Visual-Jev/blob/main/REPRODUCE.md">paper reproduction guide</a> for training and evaluation.</p>
+  </div>
+</section>
+
 
 <section id="demo">
   <div class="shead"><span class="eyebrow">Real output</span><h2>One image, six questions</h2></div>
@@ -390,7 +455,15 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
     first, sufficiency also drops on the control, where the question's evidence is
     untouched. The paper measures how often that happens — the drop on the relevant arm
     is about five times the drop on the control, not infinitely more.</p>
+    <p>The <span class="mono">incorrect_question</span> choice in the demo can catch a false
+    premise. This intervention asks a different question: does the image still contain
+    the evidence needed for an otherwise valid answer?</p>
   </div>
+  <figure class="paper-figure"><img src="paper_sufficiency.png" width="922" height="388" loading="lazy"
+    alt="Paper figure showing that confidence remains high after relevant evidence is removed, while a separately trained sufficiency output decreases">
+    <figcaption>Aggregate intervention result from the paper: confidence stays high when evidence is removed;
+    the separately trained sufficiency signal changes much more.
+    <a class="figure-link" href="paper_sufficiency.png">View full size ↗</a></figcaption></figure>
   <div class="demo" id="triples"></div>
 </section>
 
@@ -664,3 +737,5 @@ draw();
   }).join("");
 })();
 </script>
+</body>
+</html>

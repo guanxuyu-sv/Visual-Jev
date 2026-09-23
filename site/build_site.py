@@ -1,8 +1,7 @@
-"""Generate the project page from the same result files the paper is built from.
+"""Generate the project page from result files and checked-in paper figures.
 
-Every figure on the page is injected here rather than typed into the template,
-so the site cannot drift from the runs on disk any more than the paper can. The
-template holds the markup and `__TOKENS__` where numbers go.
+Measured numbers come from the result files; the template holds markup and
+`__TOKENS__` where numbers go. Selected paper figures are copied as web images.
 """
 from __future__ import annotations
 
@@ -92,6 +91,7 @@ def build(reports: str, template: str, out: str, demos: str | None = None) -> No
         "__SCALE_MEM__": str(facts["scale_mem_pct"]),
         "__MS_GEN__": str(facts["ms_gen"]),
         "__MS_SHARED__": str(facts["ms_shared"]),
+        "__MS_IND__": str(facts["ms_ind"]),
         "__MS_N1_SHARED__": str(facts["ms_n1_shared"]),
         "__MS_N1_IND__": str(facts["ms_n1_ind"]),
         "__M_B1__": f'{bench["B1"]["macro"]:.3f}',
@@ -108,7 +108,11 @@ def build(reports: str, template: str, out: str, demos: str | None = None) -> No
     open(out, "w").write(html)
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     figures = os.path.join(repo_root, "assets", "figures")
-    for asset in ("multi_question_inference.gif", "multi_question_inference.png"):
+    for asset in (
+        "multi_question_inference.gif", "multi_question_inference.png",
+        "architecture.png", "paper_frontier.png", "paper_sweep.png",
+        "paper_sufficiency.png",
+    ):
         shutil.copy2(os.path.join(figures, asset), os.path.join(os.path.dirname(out) or ".", asset))
     print(f"wrote {out} ({len(html)} bytes)")
     print(f"  {facts['total']}x = {facts['batching']}x batching "
