@@ -1,24 +1,60 @@
 {
   "state": "This image is one item in a visual inventory. Answer each question using the image.",
   "questions": {
-    "contents": {
+    "person_present": {
       "type": "choice",
-      "instructions": "What is inside the bottle?",
+      "instructions": "Is there a person in the image?",
       "criteria": {
-        "soda": null,
-        "dog": null,
-        "woman": null,
-        "player": null
+        "yes": null,
+        "no": null
       }
     },
-    "drink": {
+    "people_count": {
       "type": "choice",
-      "instructions": "What drink is inside the bottle?",
+      "instructions": "How many people are visible?",
       "criteria": {
-        "cat": null,
-        "soda": null,
+        "one": null,
+        "two": null,
+        "three": null,
+        "none": null
+      }
+    },
+    "sitting_object": {
+      "type": "choice",
+      "instructions": "What is the person sitting on?",
+      "criteria": {
+        "bench": null,
         "chair": null,
+        "ground": null,
         "couch": null
+      }
+    },
+    "tree_relation": {
+      "type": "choice",
+      "instructions": "What is in front of the green tree?",
+      "criteria": {
+        "guy": null,
+        "player": null,
+        "lady": null,
+        "bench": null
+      }
+    },
+    "bottle_color": {
+      "type": "choice",
+      "instructions": "What color is the bottle?",
+      "criteria": {
+        "green": null,
+        "clear": null,
+        "red": null,
+        "blue": null
+      }
+    },
+    "red_containers": {
+      "type": "choice",
+      "instructions": "Are there any red bottles or cans?",
+      "criteria": {
+        "no": null,
+        "yes": null
       }
     }
   }
