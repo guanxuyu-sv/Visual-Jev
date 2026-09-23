@@ -185,6 +185,7 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
 .flinks{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:18px}
 .flinks a{font-size:14px;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule)}
 .flinks a:hover{border-bottom-color:var(--share)}
+.flinks span{font-size:14px;color:var(--ink-2)}
 .caveat{border-left:2px solid var(--share);padding-left:14px;max-width:64ch}
 @media (prefers-reduced-motion: no-preference){
   .drow .bar i{transition:width .45s cubic-bezier(.2,.7,.3,1)}
@@ -416,12 +417,14 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
 
 <footer class="wrap">
   <div class="flinks">
-    <a href="#">Paper (PDF)</a>
-    <a href="#">Code</a>
-    <a href="#">Raw predictions</a>
+    <a href="https://github.com/guanxuyu-sv/Visual-Jev/tree/main/data">Raw predictions</a>
+    <a href="https://github.com/guanxuyu-sv/Visual-Jev">Page source</a>
+    <span>Paper (PDF) &mdash; not linked yet</span>
+    <span>Training and evaluation code &mdash; not linked yet</span>
   </div>
-  <p class="caveat">Under anonymous review. Links are placeholders until the submission is de-anonymised —
-  publishing this page with the paper attached would break anonymity.</p>
+  <p class="caveat">Every number on this page is injected from the result files linked above, so the
+  figures can be checked without the paper. The manuscript and the training and evaluation code stay
+  unlinked while the submission is under review.</p>
 </footer>
 </div>
 
