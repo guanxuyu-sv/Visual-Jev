@@ -69,9 +69,7 @@ code/reports/           tables and figure generation
 data/                   scored experimental outputs
 site/                   website source and build scripts
 docs/index.html         generated GitHub Pages site
-assets/figures/         README-ready images rendered from the PDFs
-fig_*.pdf               execution sweep and accuracy–cost frontier
-figure_architecture.*   architecture diagram files
+assets/figures/         README figures in PNG format
 REPRODUCE.md           end-to-end reproduction guide
 ```
 
