@@ -1,0 +1,21 @@
+site/template.html
+  s_f402dd3d08b4ee::t_76846e8ca7ea67 50-53,55-60,62-64,66,69-75,229-247
+docs/index.html
+  s_f402dd3d08b4ee::t_580b1d42b10b17 50-53,55-60,62-64,66,69-75,229-247
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "d1d49e7f9e8cec50d5c7c9288e2cdd3aed603bc5",
+  "prompts": {},
+  "sessions": {
+    "s_f402dd3d08b4ee": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0cf9f-9cfb-7010-8922-e73b99b90698",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "yuhang yao <yh-yao@foxmail.com>"
+    }
+  }
+}
