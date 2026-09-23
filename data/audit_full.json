@@ -1,0 +1,134 @@
+[
+ {
+  "row": 0,
+  "base_id": "adc413c764cd663e",
+  "question": "What is the color of the hat the man is wearing?",
+  "gold": "white",
+  "mode": "occlude_relevant",
+  "verification": {
+   "evidence_area_px": 36356,
+   "irrelevant_area_px": 36414,
+   "area_ratio": 1.0015953350203544,
+   "evidence_frac_of_image": 0.21835435435435435,
+   "evidence_coverage_of_boxes": 1.3815169478644171,
+   "irrelevant_overlap_evidence_px": 0,
+   "irrelevant_overlap_samename_px": 0,
+   "image_wh": [
+    500,
+    333
+   ],
+   "n_evidence_boxes": 2,
+   "n_irrelevant_boxes": 1
+  }
+ },
+ {
+  "row": 1,
+  "base_id": "7872c406a0c908f1",
+  "question": "Are there both peppers and pineapples in the picture?",
+  "gold": "yes",
+  "mode": "occlude_relevant",
+  "verification": {
+   "evidence_area_px": 8712,
+   "irrelevant_area_px": 8700,
+   "area_ratio": 0.9986225895316805,
+   "evidence_frac_of_image": 0.046464,
+   "evidence_coverage_of_boxes": 1.4376237623762376,
+   "irrelevant_overlap_evidence_px": 0,
+   "irrelevant_overlap_samename_px": 0,
+   "image_wh": [
+    500,
+    375
+   ],
+   "n_evidence_boxes": 2,
+   "n_irrelevant_boxes": 1
+  }
+ },
+ {
+  "row": 2,
+  "base_id": "e245427c1057a18c",
+  "question": "What is the vehicle that the toddler is in?",
+  "gold": "carriage",
+  "mode": "occlude_relevant",
+  "verification": {
+   "evidence_area_px": 12784,
+   "irrelevant_area_px": 12768,
+   "area_ratio": 0.9987484355444305,
+   "evidence_frac_of_image": 0.07678078078078078,
+   "evidence_coverage_of_boxes": 1.3588435374149659,
+   "irrelevant_overlap_evidence_px": 0,
+   "irrelevant_overlap_samename_px": 0,
+   "image_wh": [
+    333,
+    500
+   ],
+   "n_evidence_boxes": 2,
+   "n_irrelevant_boxes": 1
+  }
+ },
+ {
+  "row": 3,
+  "base_id": "9c6a6c3734d90070",
+  "question": "Who is sitting in the container to the left of the player?",
+  "gold": "umpire",
+  "mode": "occlude_relevant",
+  "verification": {
+   "evidence_area_px": 30360,
+   "irrelevant_area_px": 30394,
+   "area_ratio": 1.0011198945981554,
+   "evidence_frac_of_image": 0.18234234234234234,
+   "evidence_coverage_of_boxes": 1.424015009380863,
+   "irrelevant_overlap_evidence_px": 0,
+   "irrelevant_overlap_samename_px": 0,
+   "image_wh": [
+    500,
+    333
+   ],
+   "n_evidence_boxes": 3,
+   "n_irrelevant_boxes": 1
+  }
+ },
+ {
+  "row": 4,
+  "base_id": "f5722710c977a585",
+  "question": "What type of meat is to the right of the vegetable on the pizza?",
+  "gold": "pepperoni",
+  "mode": "occlude_relevant",
+  "verification": {
+   "evidence_area_px": 50160,
+   "irrelevant_area_px": 50112,
+   "area_ratio": 0.999043062200957,
+   "evidence_frac_of_image": 0.26752,
+   "evidence_coverage_of_boxes": 1.3460712752254187,
+   "irrelevant_overlap_evidence_px": 0,
+   "irrelevant_overlap_samename_px": 0,
+   "image_wh": [
+    375,
+    500
+   ],
+   "n_evidence_boxes": 3,
+   "n_irrelevant_boxes": 1
+  }
+ },
+ {
+  "row": 5,
+  "base_id": "5cdf1977af941f5c",
+  "question": "What is the animal to the right of the person that is wearing trousers?",
+  "gold": "dog",
+  "mode": "occlude_relevant",
+  "verification": {
+   "evidence_area_px": 17712,
+   "irrelevant_area_px": 17762,
+   "area_ratio": 1.0028229448961157,
+   "evidence_frac_of_image": 0.10637837837837838,
+   "evidence_coverage_of_boxes": 1.4106403313157057,
+   "irrelevant_overlap_evidence_px": 0,
+   "irrelevant_overlap_samename_px": 0,
+   "image_wh": [
+    500,
+    333
+   ],
+   "n_evidence_boxes": 3,
+   "n_irrelevant_boxes": 1
+  }
+ }
+]

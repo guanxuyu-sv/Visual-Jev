@@ -1,0 +1,28 @@
+# The versions these results were produced with, read back from the machine
+# that produced them (installed 2026-09-21).
+#
+# torch and torchvision are CUDA 13.0 builds and are not on PyPI; install them
+# first from the PyTorch index, then the rest:
+#
+#   pip install torch==2.14.0 torchvision==0.29.0 \
+#       --index-url https://download.pytorch.org/whl/cu130
+#   pip install -r requirements.txt
+#
+# safetensors is the one line not pinned to an observed value. The version the
+# study ran under was overwritten on the shared machine before it was recorded;
+# what is certain is that transformers 5.17.0 refuses to import below 0.8.0,
+# and 0.8.0 is the release that was current at the time.
+
+transformers==5.17.0
+peft==0.21.0
+accelerate==1.15.0
+safetensors>=0.8.0
+tokenizers==0.23.2
+huggingface_hub==1.32.0
+
+numpy==2.2.6
+pillow==12.3.0
+matplotlib==3.10.9
+datasets==5.0.1
+pandas==2.3.3
+pyarrow==25.0.1

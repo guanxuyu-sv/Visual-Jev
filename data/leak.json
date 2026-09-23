@@ -1,0 +1,35 @@
+{
+ "GQA val originals": {
+  "chance": 0.36491167301697264,
+  "blind": 0.5852363250132767,
+  "sighted": 0.8406650502251473,
+  "visual_gain": 0.6158415999666482,
+  "n": 14435
+ },
+ "SNLI-VE claims": {
+  "chance": 0.33333333333333626,
+  "blind": 0.3335,
+  "sighted": 0.637,
+  "visual_gain": 0.4553638409602401,
+  "n": 2000
+ },
+ "TextVQA v1 (leaky)": {
+  "chance": 0.25,
+  "sighted": 0.9968,
+  "n": 2500
+ },
+ "TextVQA (8 options)": {
+  "chance": 0.125,
+  "blind": 0.3688,
+  "sighted": 0.9736,
+  "visual_gain": 0.9581749049429659,
+  "n": 2500
+ },
+ "TallyQA-Choice": {
+  "chance": 0.16666666666666702,
+  "blind": 0.20883534136546184,
+  "sighted": 0.357429718875502,
+  "visual_gain": 0.18781725888324874,
+  "n": 498
+ }
+}
