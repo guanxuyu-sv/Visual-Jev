@@ -72,7 +72,7 @@ python code/examples/quickstart.py \
     --request-file code/examples/bottle_questions.json --device mps
 ```
 
-The shared image and `state` are cached once, then reused by the parallel questions. This runner supports `choice` questions with 2–16 options and prints each option's probability; it downloads the 4B base and adapter on first use. Tested on an M4 Pro with 24 GB unified memory. Lower `--max-pixels` if memory is tight.
+The shared image and `state` are cached once, then reused by the parallel questions. The demo includes an `incorrect_question` choice for false premises; it catches the dog/person mismatch with 0.966 probability. This runner supports `choice` questions with 2–16 options. It downloads the 4B base and adapter on first use; lower `--max-pixels` if Mac memory is tight.
 
 ## Reproduce the paper
 

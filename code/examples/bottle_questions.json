@@ -21,12 +21,12 @@
     },
     "sitting_object": {
       "type": "choice",
-      "instructions": "What is the dog sitting on?",
+      "instructions": "What is the person sitting on? If this question's premise is false, choose the option that says so.",
       "criteria": {
         "bench": null,
         "chair": null,
         "ground": null,
-        "couch": null
+        "incorrect_question": "The premise is false: the image shows a dog, not a person."
       }
     },
     "tree_relation": {
