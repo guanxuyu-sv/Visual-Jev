@@ -42,15 +42,23 @@ Timings are synchronized warm measurements on one RTX 5090 in bfloat16. They sta
 
 ## Try the released model
 
-This is **inference only**: no training run or benchmark dataset is needed. After installing the environment in [REPRODUCE.md](REPRODUCE.md), classify a local image among choices you supply on a CUDA GPU:
+This is **inference only**: no training run or benchmark dataset is needed. The script runs on CUDA or Apple Silicon's MPS backend. On a Mac, install a regular macOS PyTorch build (do not use the CUDA wheel command in the reproduction section), then install the project's remaining dependencies:
+
+```bash
+python3 -m venv .venv && source .venv/bin/activate
+pip install torch torchvision
+pip install -r code/requirements.txt
+```
+
+Classify a local image among choices you supply; `--device auto` selects MPS on a Mac:
 
 ```bash
 python code/examples/quickstart.py --image /path/to/image.jpg \
     --question "What animal is in the image?" \
-    --choices cat dog bird other
+    --choices cat dog bird other --device mps
 ```
 
-The script downloads the Qwen3-VL-4B base and [answer-supervised LoRA adapter](https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft) from Hugging Face on first use. It prints the predicted choice and a probability for each supplied answer using the paper's candidate-token LM-head readout. It does not generate a free-form description: if the correct category is absent from `--choices`, the model still assigns probability across the choices provided. Run it with only `--image` for the built-in two-question, shared-prefix example. See [quickstart.py](code/examples/quickstart.py) to change those questions.
+The script downloads the Qwen3-VL-4B base and [answer-supervised LoRA adapter](https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft) from Hugging Face on first use. It prints the predicted choice and a probability for each supplied answer using the paper's candidate-token LM-head readout. It does not generate a free-form description: if the correct category is absent from `--choices`, the model still assigns probability across the choices provided. The MPS path was exercised on an M4 Pro with 24 GB unified memory using PyTorch 2.14 and FP16, for both single-question and two-question inference. On a Mac, use `--max-pixels 100352` if memory is tight; reducing resolution can affect accuracy. Run it with only `--image` for the built-in two-question, shared-prefix example. See [quickstart.py](code/examples/quickstart.py) to change those questions.
 
 ## Reproduce the paper
 
