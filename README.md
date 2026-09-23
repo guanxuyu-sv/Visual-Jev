@@ -67,7 +67,7 @@ python code/examples/quickstart.py \
 ```
 
 <p align="center">
-  <img src="assets/figures/demo_bottle.jpg" alt="A clear bottle on a table" width="360">
+  <img src="assets/figures/multi_question_inference.gif" alt="Visual Jev reuses one bottle image and shared text prefix, then answers two questions in parallel" width="760">
 </p>
 
 The image and shared `state` are encoded once into a shared prefix and cached; question-specific instructions and choices are evaluated as separate branches in one batch. Thus both image features and common text are reused, while each question receives its own probabilities. This local visual runner currently supports Jev-style `choice` questions with 2–16 options; it accepts a local image path separately from the JSON request. The canonical Jev request format and independent-question semantics are described in the [TypeSafe quick start](https://docs.typesafe.ai/introduction/quickstart) and [question primitives](https://docs.typesafe.ai/primitives).
