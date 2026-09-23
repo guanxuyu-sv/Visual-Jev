@@ -1,0 +1,19 @@
+README.md
+  s_f402dd3d08b4ee::t_84436c81b58d8f 72
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "53b4231ab7be6292bd3aa56882d3c90208575abb",
+  "prompts": {},
+  "sessions": {
+    "s_f402dd3d08b4ee": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0cf9f-9cfb-7010-8922-e73b99b90698",
+        "model": "gpt-6-sol"
+      },
+      "human_author": "yuhang yao <yh-yao@foxmail.com>"
+    }
+  }
+}
