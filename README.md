@@ -1,68 +1,106 @@
-# Visual Jev — project page
+# Visual Jev
 
-Source for the project page. One image, one public context, many runtime-defined
-questions, each answered independently — and what that workload costs to serve.
+**Decision probabilities for many questions about one image.** This is the official code and results repository for [*Visual Jev: Accurate and Efficient Decisions from Shared Visual Context*](https://arxiv.org/abs/2609.25845). The project extends the Jev-style decision interface to vision: each question supplies its answer choices at request time, and each answer is scored independently against the same image and public context.
 
-**Live page:** https://guanxuyu-sv.github.io/Visual-Jev/
+**[📄 Paper](https://arxiv.org/abs/2609.25845)** · **[🌐 Project page](https://guanxuyu-sv.github.io/Visual-Jev/)** · **[🤗 4B answer-supervised adapter](https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft)** · **[🧪 Reproduction guide](REPRODUCE.md)**
 
-## What it shows
+<p align="center">
+  <img src="assets/figures/architecture.png" alt="Visual Jev architecture: one shared image prefix, isolated question branches, and LM-head readout" width="100%">
+</p>
 
-- **One image, six questions.** Held-out GQA images with the questions that
-  naturally occur on them, and the probabilities the model actually returned.
-- **Confident without the evidence.** The same judgement under three
-  conditions — original, the question's evidence region destroyed, and a
-  control with an equal-area region elsewhere destroyed. Confidence stays above
-  0.6 where the answer has already become wrong; the trained sufficiency output
-  collapses instead.
-- **Latency explorer.** The measured sweep: pick a question count and a
-  backbone, and all eight execution paths redraw from the real numbers.
-- **What didn't work.** Four results that did not go our way, reported because
-  each changes what a reader should do next.
+<p align="center"><sub>One visual encoding and cached public prefix; independent question suffixes run as a batch.</sub></p>
 
-## Nothing on the page is typed by hand
+The default system uses answer-supervised LoRA on Qwen3-VL-4B. It reads candidate-token logits from the backbone's existing **LM head** at each `Answer:` position and normalizes them over that question's valid choices. The typed heads in the diagram are experimental controls.
 
-Every figure is injected from `data/*.json`, which are the same result files
-the paper's tables are computed from. `docs/index.html` is generated output —
-edit `site/template.html` for markup, never the built file.
+## Results at a glance
+
+| Finding | Evidence from the paper |
+| --- | --- |
+| **Use the existing LM head.** | Answer SFT and a matched typed linear decision head both reach **0.761** four-benchmark macro accuracy. The head has no consistent advantage across three seeds. |
+| **Fine-tune for the target task.** | The 4B backbone rises from **0.706 → 0.761** macro accuracy after answer supervision. Most of the gain is on GQA and SNLI-VE, the task families represented in training; held-out TextVQA and TallyQA change little. |
+| **Share work across questions.** | With **32 questions per image**, shared-prefix batching reaches **5.7 ms amortized per question**, versus **50.7 ms** for independent serial execution and **19.3 ms** for batching without prefix reuse. |
+
+The **8.9×** comparison is a throughput result: the shared batch of 32 finishes in about **182 ms**. Its 5.7 ms figure is the batch time divided by 32, not the latency of one independently arriving request. At `N = 1`, prefix sharing adds overhead (**82.9 ms** versus **48.1 ms** independent). At `N = 32`, peak allocated memory rises from **8.40 to 10.10 GiB**. The speedup comes from both parallel question execution and reuse of visual context.
+
+This is also how we interpret Jev's speed: parallel decisions over shared context can improve throughput, while batching one question does not make the same model's single request faster. A smaller backbone can lower absolute inference cost. In our matched 32-question shared-batch measurement, **4B takes 5.7 ms/question** and **8B takes 7.3 ms/question**, with macro accuracy of **0.761** and **0.780**, respectively. This model-size comparison is separate from the execution-path gain; we did not measure the latency of another Jev service.
+
+## Figures
+
+### Execution sweep
+
+![Warm amortized time per question versus the number of questions sharing an image](assets/figures/sweep.png)
+
+Warm amortized time per question as more questions share an image. Color identifies the reused computation; solid lines are batched paths and dashed lines are serial paths.
+
+### Accuracy and execution cost
+
+![Macro accuracy against amortized time per question at one and 32 questions](assets/figures/frontier.png)
+
+At `N = 1`, prefix sharing adds overhead. At `N = 32`, it moves each backbone left on the cost axis without changing its training state. Hollow and filled markers separate the original backbone from answer SFT; blue and orange separate 4B and 8B.
+
+Timings are synchronized warm measurements on one RTX 5090 in bfloat16. They start from an in-memory decoded image and include preprocessing, transfer, and execution. Image decoding, disk and network I/O, and serving queues are excluded. See the [paper](https://arxiv.org/abs/2609.25845) for the full protocol and limitations.
+
+## Try the released model
+
+This is **inference only**: no training run or benchmark dataset is needed. After installing the environment in [REPRODUCE.md](REPRODUCE.md), classify a local image among choices you supply on a CUDA GPU:
+
+```bash
+python code/examples/quickstart.py --image /path/to/image.jpg \
+    --question "What animal is in the image?" \
+    --choices cat dog bird other
+```
+
+The script downloads the Qwen3-VL-4B base and [answer-supervised LoRA adapter](https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft) from Hugging Face on first use. It prints the predicted choice and a probability for each supplied answer using the paper's candidate-token LM-head readout. It does not generate a free-form description: if the correct category is absent from `--choices`, the model still assigns probability across the choices provided. Run it with only `--image` for the built-in two-question, shared-prefix example. See [quickstart.py](code/examples/quickstart.py) to change those questions.
+
+## Reproduce the paper
+
+Follow the [end-to-end reproduction guide](REPRODUCE.md) for the exact environment, dataset layout, commands, and evaluation settings. The workflow is:
+
+1. Obtain the source datasets and build the question records for GQA, SNLI-VE, TextVQA, and TallyQA.
+2. Train the answer-supervised LoRA system and the matched head controls. The published [4B adapter](https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft) contains the recommended system's LoRA weights.
+3. Run predictions on the four evaluation sets, score them, and regenerate the paper's tables and figures with `code/reports/`.
+
+The scored outputs in `data/` let you inspect the reported numbers without a GPU. Reproducing the predictions requires the source datasets, backbone weights, and a GPU.
+
+```text
+code/vdm/               data building, training, and evaluation
+code/examples/          minimal inference example
+code/reports/           tables and figure generation
+data/                   scored experimental outputs
+site/                   website source and build scripts
+docs/index.html         generated GitHub Pages site
+assets/figures/         README-ready images rendered from the PDFs
+fig_*.pdf               execution sweep and accuracy–cost frontier
+figure_architecture.*   architecture diagram files
+REPRODUCE.md           end-to-end reproduction guide
+```
+
+The paper covers one backbone family at two sizes, four forced-choice benchmark conversions, and a single-machine timing setup. Its scope and statistical limitations are described in the [manuscript](https://arxiv.org/abs/2609.25845).
+
+## Citation
+
+```bibtex
+@misc{yu2026visualjev,
+  title        = {Visual Jev: Accurate and Efficient Decisions from Shared Visual Context},
+  author       = {Guanxu Yu and Yuhang Yao},
+  year         = {2026},
+  eprint       = {2609.25845},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.CV},
+  url          = {https://arxiv.org/abs/2609.25845}
+}
+```
+
+## License
+
+The repository's code and documentation are released under [Apache-2.0](LICENSE). The [LoRA adapter](https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft) is also listed as Apache-2.0 on its model card. The Qwen backbone, source datasets, and paper are distributed under their respective upstream terms.
+
+## Build the project website
+
+The [project website](https://guanxuyu-sv.github.io/Visual-Jev/) presents examples, a latency explorer, and negative results. Its figures are generated from the scored outputs in `data/`:
 
 ```bash
 python3 site/build_site.py --reports data --demos data/demos.json
 ```
 
-`site/make_demos.py` builds `data/demos.json` from the raw per-example
-predictions and the images the model was shown; it needs the full evaluation
-tree, which is not in this repo.
-
-## Reproducing the experiments
-
-`code/` holds the training, evaluation and reporting code, and
-[REPRODUCE.md](REPRODUCE.md) walks through it end to end: building the question
-records from the source corpora, training a system, predicting on the four
-evaluation sets, scoring, and regenerating the tables and figures. Paths are
-driven by one environment variable, so nothing points at the machine this ran
-on.
-
-The scored outputs are in `data/`, which means the numbers can be checked
-without a GPU -- the page and the paper's tables are both computed from those
-files.
-
-## Layout
-
-```
-docs/index.html     generated, served by GitHub Pages from /docs
-site/template.html  markup and copy, with __TOKENS__ where numbers go
-site/build_site.py  injects every number from data/
-site/make_demos.py  builds the demo payload from raw predictions
-data/               the scored results the page and the tables are built from
-code/vdm/           the package: data building, training, evaluation
-code/reports/       table and figure generation
-code/requirements.txt
-REPRODUCE.md        the walkthrough
-```
-
-## Status
-
-The paper is under review; this repo carries the page and the numbers behind
-it, not the manuscript. Results here are from a single-machine study on
-consumer GPUs and are reported with their seed spread and sample sizes — see
-the page for what is held out from training and what is not.
+`docs/index.html` is generated output; edit `site/template.html` to change the website. `site/make_demos.py` builds `data/demos.json` from raw per-example predictions and model input images, which are not stored in this repository.

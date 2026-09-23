@@ -1,8 +1,9 @@
 # Reproducing the experiments
 
-Everything the paper reports is produced by the code in `code/` from the
-corpora named below. The scored outputs are in `data/`, so the tables and
-figures can be checked without a GPU; regenerating the predictions needs one.
+The experiment code lives in `code/`. The scored outputs in `data/` let you
+regenerate the released tables and the execution-sweep and accuracy-cost
+figures without a GPU. Regenerating predictions requires the source corpora,
+backbone weights, and a GPU.
 
 ## What is not here
 
@@ -71,10 +72,10 @@ typed head, `m` adds the auxiliary terms, `b4` and `b5` are the remaining
 ablations.
 
 ```bash
-ITEMS="$VDM_ROOT/work/gqa_k/gqa_items.jsonl $VDM_ROOT/work/other/snli_ve_train.jsonl"
-
-python vdm/training/train.py --variant a2 --seed 0 --train_items $ITEMS \
-    --out $VDM_ROOT/runs/a2_s0 --steps 3000 --batch_size 8 --grad_ckpt
+python vdm/training/train.py --variant a2 --seed 0 \
+    --train_items "$VDM_ROOT/work/gqa_k/gqa_items.jsonl" \
+                  "$VDM_ROOT/work/other/snli_ve_train.jsonl" \
+    --out "$VDM_ROOT/runs/a2_s0" --steps 3000 --batch_size 8 --grad_ckpt
 ```
 
 Three seeds per system. On one RTX 5090 a 4B run takes about 40 minutes and an
@@ -82,7 +83,9 @@ Three seeds per system. On one RTX 5090 a 4B run takes about 40 minutes and an
 
 ## 3. Predict
 
-Every system is scored on the same four evaluation sets.
+Every system is scored on the same four evaluation sets. The example below
+predicts with the `a2_s0` run from step 2; repeat it for the other trained
+variants before generating the full paper comparison.
 
 ```bash
 NAME=a2_s0
@@ -92,7 +95,7 @@ for pair in "gqa_val:$VDM_ROOT/work/gqa_k/gqa_items.jsonl:--filter_split val" \
             "tallyqa:$VDM_ROOT/work/tallyqa/tallyqa.jsonl:"; do
   IFS=":" read -r tag file extra <<< "$pair"
   python vdm/eval/predict.py --items "$file" $extra \
-      --ckpt $VDM_ROOT/runs/$NAME --out $VDM_ROOT/preds/$NAME/$tag.jsonl
+      --ckpt "$VDM_ROOT/runs/$NAME" --out "$VDM_ROOT/preds/$NAME/$tag.jsonl"
 done
 ```
 
@@ -101,8 +104,17 @@ Prediction over the GQA evaluation split takes about 8 minutes per system.
 
 ## 4. Score
 
+To score just the example run from steps 2-3:
+
 ```bash
-python vdm/eval/benchmarks.py --out $VDM_ROOT/reports/benchmarks.json \
+python vdm/eval/benchmarks.py --out "$VDM_ROOT/reports/benchmarks_a2_s0.json" \
+    --variants a2_s0=a2_s0
+```
+
+After predicting all of the named variants, generate the full comparison:
+
+```bash
+python vdm/eval/benchmarks.py --out "$VDM_ROOT/reports/benchmarks.json" \
   --variants B1=B1 a2_s0=a2_s0 a2_s1=a2_s1 a2_s2=a2_s2 \
              b2_s0=b2_s0 b2_s1=b2_s1 b2_s2=b2_s2 \
              b2k_s0=b2k_s0 b2k_s1=b2k_s1 b2k_s2=b2k_s2 \
@@ -120,15 +132,32 @@ Accuracy is reported per benchmark with the four weighted equally, and
 confidence intervals come from a bootstrap clustered on the parent image, so
 several questions about one image cannot count as independent evidence.
 
-## 5. Tables and figures
+## 5. Regenerate tables and figures from the released results
+
+Run these commands from the repository root (`cd ..` first if you followed
+steps 1-4 from `code/`). They use the scored JSON files committed under
+`data/`, so they do not download a model or need a GPU.
 
 ```bash
-python reports/make_tables.py --out_dir <dir> --benchmarks $VDM_ROOT/reports/benchmarks.json ...
-python reports/figures.py --out_dir <dir> --preds_root $VDM_ROOT/preds ...
+mkdir -p paper-output/tables paper-output/figures
+
+python code/reports/make_tables.py --out_dir paper-output/tables \
+    --benchmarks data/benchmarks.json --bench data/bench.json \
+    --bench_8b data/bench_8b.json --precision data/precision.json \
+    --triples_all data/triples_all.json --triples_b1 data/triples_B1.json \
+    --report data/report_gqa.json --deploy data/deploy_gqa.json \
+    --leak data/leak.json
+
+python code/reports/figures.py --out_dir paper-output/figures \
+    --bench data/bench.json --benchmarks data/benchmarks.json \
+    --bench_8b data/bench_8b.json --figures sweep frontier
 ```
 
-Both take the scored JSON files and emit the macros, tables and plots the paper
-includes. No number in the paper is typed by hand.
+The first command emits `macros.tex` and the tables supported by the released
+scored files. The second emits `fig_sweep.pdf` and `fig_frontier.pdf`, the two
+result plots shown in this repository's README. The other paper figures also
+need raw per-example prediction files and intervention analyses, which are not
+included in `data/`.
 
 ## Checking the numbers without a GPU
 

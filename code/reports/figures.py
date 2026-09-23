@@ -346,19 +346,25 @@ def main():
     ap.add_argument("--triples", default=paths.under("reports", "triples_all.json"))
     ap.add_argument("--benchmarks", default=paths.under("reports", "benchmarks.json"))
     ap.add_argument("--bench_8b", default=paths.under("reports", "bench_8b.json"))
+    ap.add_argument("--figures", nargs="+", default=["risk_coverage", "sweep", "sufficiency", "frontier"],
+                    choices=["risk_coverage", "sweep", "sufficiency", "frontier"],
+                    help="select figures when only some source files are available")
     a = ap.parse_args()
     os.makedirs(a.out_dir, exist_ok=True)
     style()
 
     P = a.preds_root
-    fig_risk_coverage({"B1": f"{P}/B1/gqa_val.jsonl",
-                       "B2": f"{P}/b2_s0/gqa_val.jsonl",
-                       "B5": f"{P}/b5_s0/gqa_val.jsonl",
-                       "M": f"{P}/m_s0/gqa_val.jsonl"},
-                      os.path.join(a.out_dir, "fig_riskcoverage.pdf"))
-    fig_sweep(a.bench, os.path.join(a.out_dir, "fig_sweep.pdf"))
-    fig_sufficiency(a.triples, os.path.join(a.out_dir, "fig_sufficiency.pdf"))
-    if os.path.exists(a.benchmarks):
+    if "risk_coverage" in a.figures:
+        fig_risk_coverage({"B1": f"{P}/B1/gqa_val.jsonl",
+                           "B2": f"{P}/b2_s0/gqa_val.jsonl",
+                           "B5": f"{P}/b5_s0/gqa_val.jsonl",
+                           "M": f"{P}/m_s0/gqa_val.jsonl"},
+                          os.path.join(a.out_dir, "fig_riskcoverage.pdf"))
+    if "sweep" in a.figures:
+        fig_sweep(a.bench, os.path.join(a.out_dir, "fig_sweep.pdf"))
+    if "sufficiency" in a.figures:
+        fig_sufficiency(a.triples, os.path.join(a.out_dir, "fig_sufficiency.pdf"))
+    if "frontier" in a.figures and os.path.exists(a.benchmarks):
         fig_frontier(a.bench, a.benchmarks, os.path.join(a.out_dir, "fig_frontier.pdf"),
                      a.bench_8b if os.path.exists(a.bench_8b) else None)
 
