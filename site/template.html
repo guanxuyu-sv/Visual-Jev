@@ -69,6 +69,11 @@ section{padding-block:46px;border-bottom:1px solid var(--rule)}
 .prose p{margin:12px 0}
 .prose strong{color:var(--ink);font-weight:600}
 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:30px;margin-top:26px}
+.motion{margin:24px 0 0;border:1px solid var(--rule);background:var(--panel)}
+.motion img{display:block;width:100%;height:auto}
+.motion figcaption{padding:10px 14px;border-top:1px solid var(--rule);font-size:12px;color:var(--muted)}
+.motion-links{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:13px}
+.motion-links a{color:var(--ink);text-decoration-thickness:1px;text-underline-offset:3px}
 
 /* ---------- decomposition ---------- */
 .decomp{margin-top:26px;border:1px solid var(--rule);background:var(--panel)}
@@ -197,6 +202,7 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
     <div class="mark">Visual <em>Jev</em></div>
     <nav>
       <a href="#workload">Workload</a>
+      <a href="#live-demo">See it run</a>
       <a href="#quality">Quality</a>
       <a href="#cost">Cost</a>
       <a href="#demo">Demo</a>
@@ -241,6 +247,27 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
     <p>Two output types. <strong>Choice</strong> returns a distribution over a candidate set supplied with
     the request. <strong>Claim</strong> returns supported / contradicted / not-determined. Four benchmarks,
     two of which post-training never sees.</p>
+  </div>
+</section>
+
+<section id="live-demo">
+  <div class="shead"><span class="eyebrow">One real run</span><h2>One image, six questions, one shared prefix</h2></div>
+  <div class="prose">
+    <p>The animation shows the same image and shared text being reused across six independent questions.
+    It includes an <span class="mono">incorrect_question</span> choice: when the question assumes a person
+    but the image shows a dog, the model selects that option with <strong>0.966</strong> probability.</p>
+  </div>
+  <figure class="motion">
+    <picture>
+      <source media="(prefers-reduced-motion: reduce)" srcset="multi_question_inference.png">
+      <img src="multi_question_inference.gif" alt="Visual Jev caches one image and shared text, fans out six questions, and returns separate probabilities. The incorrect-question option wins for the false person premise.">
+    </picture>
+    <figcaption>Six answers from the same image: dog present, one dog, incorrect question, bench, green bottle, no red bottles or cans.</figcaption>
+  </figure>
+  <div class="motion-links">
+    <a href="https://github.com/guanxuyu-sv/Visual-Jev/blob/main/code/examples/quickstart.py">Try the quickstart</a>
+    <a href="https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft">Get the 4B adapter</a>
+    <a href="https://arxiv.org/abs/2609.25845">Read the paper</a>
   </div>
 </section>
 
@@ -417,14 +444,14 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
 
 <footer class="wrap">
   <div class="flinks">
+    <a href="https://arxiv.org/abs/2609.25845">Paper</a>
+    <a href="https://github.com/guanxuyu-sv/Visual-Jev">Code and reproduction guide</a>
+    <a href="https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft">4B adapter</a>
+    <a href="https://guanxuyu-sv.github.io/Visual-Jev/">Project page</a>
     <a href="https://github.com/guanxuyu-sv/Visual-Jev/tree/main/data">Raw predictions</a>
-    <a href="https://github.com/guanxuyu-sv/Visual-Jev">Page source</a>
-    <span>Paper (PDF) &mdash; not linked yet</span>
-    <span>Training and evaluation code &mdash; not linked yet</span>
   </div>
-  <p class="caveat">Every number on this page is injected from the result files linked above, so the
-  figures can be checked without the paper. The manuscript and the training and evaluation code stay
-  unlinked while the submission is under review.</p>
+  <p class="caveat">Numbers and examples on this page are generated from the checked-in result files.
+  The paper, code, reproduction guide, adapter, and raw predictions are linked above.</p>
 </footer>
 </div>
 

@@ -6,7 +6,7 @@ template holds the markup and `__TOKENS__` where numbers go.
 """
 from __future__ import annotations
 
-import argparse, json, os, statistics as st, sys
+import argparse, json, os, shutil, statistics as st, sys
 
 
 def load(reports: str):
@@ -106,6 +106,10 @@ def build(reports: str, template: str, out: str, demos: str | None = None) -> No
         raise SystemExit(f"unsubstituted tokens remain: {left}")
     os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
     open(out, "w").write(html)
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    figures = os.path.join(repo_root, "assets", "figures")
+    for asset in ("multi_question_inference.gif", "multi_question_inference.png"):
+        shutil.copy2(os.path.join(figures, asset), os.path.join(os.path.dirname(out) or ".", asset))
     print(f"wrote {out} ({len(html)} bytes)")
     print(f"  {facts['total']}x = {facts['batching']}x batching "
           f"x {facts['sharing']}x sharing | head {facts['head_delta']:+.3f}")
