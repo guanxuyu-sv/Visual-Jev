@@ -1,0 +1,21 @@
+code/examples/bottle_questions.json
+  s_f402dd3d08b4ee::t_e805a9cb851fb4 24,29
+README.md
+  s_f402dd3d08b4ee::t_0970b401e71e23 75
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "73b264bb1abaab85b4c0a8e845b0fd3245476540",
+  "prompts": {},
+  "sessions": {
+    "s_f402dd3d08b4ee": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0cf9f-9cfb-7010-8922-e73b99b90698",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "yuhang yao <yh-yao@foxmail.com>"
+    }
+  }
+}
