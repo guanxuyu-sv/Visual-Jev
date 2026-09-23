@@ -1,0 +1,39 @@
+README.md
+  s_f402dd3d08b4ee::t_78e6ace461956d 43-44,67,79-91,94-96
+  s_f402dd3d08b4ee::t_5a0392f5372f6a 5,8,11,31,33,37,39
+  s_f402dd3d08b4ee::t_a751a1e41a4b24 1,3,7,9,13,15-30,32,34-36,38,40-42,65-66,68-73,75,77-78
+  s_f402dd3d08b4ee::t_3316c063cfce5e 55,57,59-61,63,97-104,106
+  s_f402dd3d08b4ee::t_716fbf55ba82af 74
+  s_f402dd3d08b4ee::t_d92c0a1a0e173d 45,48-50,53
+code/reports/figures.py
+  s_f402dd3d08b4ee::t_91fde3b0d9b59f 349-351,357-367
+LICENSE
+  s_f402dd3d08b4ee::t_586aa2684de69a 1-202
+code/examples/quickstart.py
+  s_f402dd3d08b4ee::t_03c35e440d0b20 1,4-6,17-19,23-26,35-44,53-55,63
+  s_f402dd3d08b4ee::t_79dffd54b71337 27-33
+  s_f402dd3d08b4ee::t_69f044e6b47a8f 2-3,7-16,20-22,34,45-52,56-62,64-67
+REPRODUCE.md
+  s_f402dd3d08b4ee::t_10c687e5696e50 3-6,75-78,98,135,142-153,156-160
+  s_f402dd3d08b4ee::t_e1da068e996c13 86-88,107-108,110-117
+  s_f402dd3d08b4ee::t_f44e28c437d224 137-139
+  s_f402dd3d08b4ee::t_74817b8d497fdb 136
+.gitignore
+  s_f402dd3d08b4ee::t_1711eb880f19f6 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "67f58246fb5a939616e884e62815bd0955dca0c8",
+  "prompts": {},
+  "sessions": {
+    "s_f402dd3d08b4ee": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0cf9f-9cfb-7010-8922-e73b99b90698",
+        "model": "gpt-6-sol"
+      },
+      "human_author": "yuhang yao <yh-yao@foxmail.com>"
+    }
+  }
+}
