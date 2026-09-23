@@ -1,0 +1,25 @@
+README.md
+  s_f402dd3d08b4ee::t_e4b507855dacc9 61-75
+  s_f402dd3d08b4ee::t_60e3e626a36df6 94
+code/examples/bottle_questions.json
+  s_f402dd3d08b4ee::t_f4f376d7aa493c 1-25
+code/examples/quickstart.py
+  s_f402dd3d08b4ee::t_850bf67f1bfc47 72-73
+  s_f402dd3d08b4ee::t_39660c0acd9a84 11,21,31-32,59-71,74-95,98-99,107-108,118,125-126,128
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "dd27927096251399409a256b312c4086d75299d1",
+  "prompts": {},
+  "sessions": {
+    "s_f402dd3d08b4ee": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0cf9f-9cfb-7010-8922-e73b99b90698",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "yuhang yao <yh-yao@foxmail.com>"
+    }
+  }
+}
