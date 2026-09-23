@@ -3,7 +3,7 @@
   "questions": {
     "person_present": {
       "type": "choice",
-      "instructions": "Is there a person in the image?",
+      "instructions": "Is there a dog in the image?",
       "criteria": {
         "yes": null,
         "no": null
@@ -11,7 +11,7 @@
     },
     "people_count": {
       "type": "choice",
-      "instructions": "How many people are visible?",
+      "instructions": "How many dogs are visible?",
       "criteria": {
         "one": null,
         "two": null,
@@ -21,7 +21,7 @@
     },
     "sitting_object": {
       "type": "choice",
-      "instructions": "What is the person sitting on?",
+      "instructions": "What is the dog sitting on?",
       "criteria": {
         "bench": null,
         "chair": null,
