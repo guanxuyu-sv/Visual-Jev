@@ -5,6 +5,12 @@
 **[📄 Paper](https://arxiv.org/abs/2609.25845)** · **[🌐 Project page](https://guanxuyu-sv.github.io/Visual-Jev/)** · **[🤗 4B answer-supervised adapter](https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft)** · **[🧪 Reproduction guide](REPRODUCE.md)**
 
 <p align="center">
+  <img src="assets/figures/multi_question_inference.gif" alt="Visual Jev reuses one bottle image and shared text prefix, then answers six varied questions in parallel" width="900">
+</p>
+
+<p align="center"><sub>One image, six different questions, six independent probability distributions.</sub></p>
+
+<p align="center">
   <img src="assets/figures/architecture.png" alt="Visual Jev architecture: one shared image prefix, isolated question branches, and LM-head readout" width="100%">
 </p>
 
@@ -58,7 +64,7 @@ python code/examples/quickstart.py --image /path/to/image.jpg \
     --choices cat dog bird other --device mps
 ```
 
-To ask several questions about the **same image**, use Jev's named-question request shape: shared `state`, then a `questions` object keyed by question ID. Each choice question provides its own `instructions` and `criteria`. This example uses the bottle image included below and asks six different kinds of questions in one call: presence, count, object, spatial relation, color, and a yes/no property.
+For several questions about the same image, use Jev's named `questions` with a shared `state`. The included request asks about presence, count, objects, spatial relations, and color:
 
 ```bash
 python code/examples/quickstart.py \
@@ -66,13 +72,7 @@ python code/examples/quickstart.py \
     --request-file code/examples/bottle_questions.json --device mps
 ```
 
-<p align="center">
-  <img src="assets/figures/multi_question_inference.gif" alt="Visual Jev reuses one bottle image and shared text prefix, then answers six varied questions in parallel" width="760">
-</p>
-
-The image and shared `state` are encoded once into a shared prefix and cached; the six question-specific instructions and choices are evaluated as separate branches in one batch. Thus both image features and common text are reused, while each question receives its own probabilities. This local visual runner currently supports Jev-style `choice` questions with 2–16 options; it accepts a local image path separately from the JSON request. The canonical Jev request format and independent-question semantics are described in the [TypeSafe quick start](https://docs.typesafe.ai/introduction/quickstart) and [question primitives](https://docs.typesafe.ai/primitives).
-
-The script downloads the Qwen3-VL-4B base and [answer-supervised LoRA adapter](https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft) from Hugging Face on first use. It prints the predicted choice and a probability for each supplied answer using the paper's candidate-token LM-head readout. It does not generate a free-form description: if the correct category is absent from the supplied choices, the model still assigns probability across the choices provided. The MPS path was exercised on an M4 Pro with 24 GB unified memory using PyTorch 2.14 and FP16, for single-question inference and six questions over the same bottle image. On a Mac, use `--max-pixels 100352` if memory is tight; reducing resolution can affect accuracy. Run it with only `--image` for the built-in two-question example. See [quickstart.py](code/examples/quickstart.py) and [bottle_questions.json](code/examples/bottle_questions.json) to adapt the requests.
+The shared image and `state` are cached once, then reused by the parallel questions. This runner supports `choice` questions with 2–16 options and prints each option's probability; it downloads the 4B base and adapter on first use. Tested on an M4 Pro with 24 GB unified memory. Lower `--max-pixels` if memory is tight.
 
 ## Reproduce the paper
 
