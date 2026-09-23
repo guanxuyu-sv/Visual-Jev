@@ -1,0 +1,20 @@
+README.md
+  s_f402dd3d08b4ee::t_916f620b2809b4 8-12,67,75
+  s_f402dd3d08b4ee::t_1c8548175a7117 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "9e482f4ea60b749aced1d61f196ea038a43ddcdd",
+  "prompts": {},
+  "sessions": {
+    "s_f402dd3d08b4ee": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0cf9f-9cfb-7010-8922-e73b99b90698",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "yuhang yao <yh-yao@foxmail.com>"
+    }
+  }
+}
