@@ -1,0 +1,23 @@
+README.md
+  s_f402dd3d08b4ee::t_261e6fc1edbf6c 45-53,58
+  s_f402dd3d08b4ee::t_5d6a30cbbe4873 61
+code/examples/quickstart.py
+  s_f402dd3d08b4ee::t_fec29b165d8f0b 24-25,68
+  s_f402dd3d08b4ee::t_2efe12dad5ce5e 22-23,32-33,41-54,66-67
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "4d501fcb92f2adbb844389cf97507ce29051f6c8",
+  "prompts": {},
+  "sessions": {
+    "s_f402dd3d08b4ee": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0cf9f-9cfb-7010-8922-e73b99b90698",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "yuhang yao <yh-yao@foxmail.com>"
+    }
+  }
+}
