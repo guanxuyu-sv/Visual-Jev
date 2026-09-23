@@ -1,0 +1,25 @@
+{
+  "state": "This image is one item in a visual inventory. Answer each question using the image.",
+  "questions": {
+    "contents": {
+      "type": "choice",
+      "instructions": "What is inside the bottle?",
+      "criteria": {
+        "soda": null,
+        "dog": null,
+        "woman": null,
+        "player": null
+      }
+    },
+    "drink": {
+      "type": "choice",
+      "instructions": "What drink is inside the bottle?",
+      "criteria": {
+        "cat": null,
+        "soda": null,
+        "chair": null,
+        "couch": null
+      }
+    }
+  }
+}

@@ -58,7 +58,21 @@ python code/examples/quickstart.py --image /path/to/image.jpg \
     --choices cat dog bird other --device mps
 ```
 
-The script downloads the Qwen3-VL-4B base and [answer-supervised LoRA adapter](https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft) from Hugging Face on first use. It prints the predicted choice and a probability for each supplied answer using the paper's candidate-token LM-head readout. It does not generate a free-form description: if the correct category is absent from `--choices`, the model still assigns probability across the choices provided. The MPS path was exercised on an M4 Pro with 24 GB unified memory using PyTorch 2.14 and FP16, for both single-question and two-question inference. On a Mac, use `--max-pixels 100352` if memory is tight; reducing resolution can affect accuracy. Run it with only `--image` for the built-in two-question, shared-prefix example. See [quickstart.py](code/examples/quickstart.py) to change those questions.
+To ask several questions about the **same image**, use Jev's named-question request shape: shared `state`, then a `questions` object keyed by question ID. Each choice question provides its own `instructions` and `criteria`. This example uses the bottle image included below and asks two questions in one call:
+
+```bash
+python code/examples/quickstart.py \
+    --image assets/figures/demo_bottle.jpg \
+    --request-file code/examples/bottle_questions.json --device mps
+```
+
+<p align="center">
+  <img src="assets/figures/demo_bottle.jpg" alt="A clear bottle on a table" width="360">
+</p>
+
+The image and shared `state` are encoded once into a shared prefix and cached; question-specific instructions and choices are evaluated as separate branches in one batch. Thus both image features and common text are reused, while each question receives its own probabilities. This local visual runner currently supports Jev-style `choice` questions with 2–16 options; it accepts a local image path separately from the JSON request. The canonical Jev request format and independent-question semantics are described in the [TypeSafe quick start](https://docs.typesafe.ai/introduction/quickstart) and [question primitives](https://docs.typesafe.ai/primitives).
+
+The script downloads the Qwen3-VL-4B base and [answer-supervised LoRA adapter](https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft) from Hugging Face on first use. It prints the predicted choice and a probability for each supplied answer using the paper's candidate-token LM-head readout. It does not generate a free-form description: if the correct category is absent from the supplied choices, the model still assigns probability across the choices provided. The MPS path was exercised on an M4 Pro with 24 GB unified memory using PyTorch 2.14 and FP16, for single-question inference and two questions over the same bottle image. On a Mac, use `--max-pixels 100352` if memory is tight; reducing resolution can affect accuracy. Run it with only `--image` for the built-in two-question example. See [quickstart.py](code/examples/quickstart.py) and [bottle_questions.json](code/examples/bottle_questions.json) to adapt the requests.
 
 ## Reproduce the paper
 
@@ -77,7 +91,7 @@ code/reports/           tables and figure generation
 data/                   scored experimental outputs
 site/                   website source and build scripts
 docs/index.html         generated GitHub Pages site
-assets/figures/         README figures in PNG format
+assets/figures/         README figures and the bottle demo image
 REPRODUCE.md           end-to-end reproduction guide
 ```
 
