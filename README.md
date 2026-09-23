@@ -18,34 +18,6 @@
 
 The default system uses answer-supervised LoRA on Qwen3-VL-4B. It reads candidate-token logits from the backbone's existing **LM head** at each `Answer:` position and normalizes them over that question's valid choices. The typed heads in the diagram are experimental controls.
 
-## Results at a glance
-
-| Finding | Evidence from the paper |
-| --- | --- |
-| **Use the existing LM head.** | Answer SFT and a matched typed linear decision head both reach **0.761** four-benchmark macro accuracy. The head has no consistent advantage across three seeds. |
-| **Fine-tune for the target task.** | The 4B backbone rises from **0.706 → 0.761** macro accuracy after answer supervision. Most of the gain is on GQA and SNLI-VE, the task families represented in training; held-out TextVQA and TallyQA change little. |
-| **Share work across questions.** | With **32 questions per image**, shared-prefix batching reaches **5.7 ms amortized per question**, versus **50.7 ms** for independent serial execution and **19.3 ms** for batching without prefix reuse. |
-
-The **8.9×** comparison is a throughput result: the shared batch of 32 finishes in about **182 ms**. Its 5.7 ms figure is the batch time divided by 32, not the latency of one independently arriving request. At `N = 1`, prefix sharing adds overhead (**82.9 ms** versus **48.1 ms** independent). At `N = 32`, peak allocated memory rises from **8.40 to 10.10 GiB**. The speedup comes from both parallel question execution and reuse of visual context.
-
-This is also how we interpret Jev's speed: parallel decisions over shared context can improve throughput, while batching one question does not make the same model's single request faster. A smaller backbone can lower absolute inference cost. In our matched 32-question shared-batch measurement, **4B takes 5.7 ms/question** and **8B takes 7.3 ms/question**, with macro accuracy of **0.761** and **0.780**, respectively. This model-size comparison is separate from the execution-path gain; we did not measure the latency of another Jev service.
-
-## Figures
-
-### Execution sweep
-
-![Warm amortized time per question versus the number of questions sharing an image](assets/figures/sweep.png)
-
-Warm amortized time per question as more questions share an image. Color identifies the reused computation; solid lines are batched paths and dashed lines are serial paths.
-
-### Accuracy and execution cost
-
-![Macro accuracy against amortized time per question at one and 32 questions](assets/figures/frontier.png)
-
-At `N = 1`, prefix sharing adds overhead. At `N = 32`, it moves each backbone left on the cost axis without changing its training state. Hollow and filled markers separate the original backbone from answer SFT; blue and orange separate 4B and 8B.
-
-Timings are synchronized warm measurements on one RTX 5090 in bfloat16. They start from an in-memory decoded image and include preprocessing, transfer, and execution. Image decoding, disk and network I/O, and serving queues are excluded. See the [paper](https://arxiv.org/abs/2609.25845) for the full protocol and limitations.
-
 ## Try the released model
 
 This is **inference only**: no training run or benchmark dataset is needed. The script runs on CUDA or Apple Silicon's MPS backend. On a Mac, install a regular macOS PyTorch build (do not use the CUDA wheel command in the reproduction section), then install the project's remaining dependencies:
@@ -73,6 +45,35 @@ python code/examples/quickstart.py \
 ```
 
 The shared image and `state` are cached once, then reused by the parallel questions. The demo includes an `incorrect_question` choice for false premises; it catches the dog/person mismatch with 0.966 probability. This runner supports `choice` questions with 2–16 options. It downloads the 4B base and adapter on first use; lower `--max-pixels` if Mac memory is tight.
+
+
+## Results at a glance
+
+| Finding | Evidence from the paper |
+| --- | --- |
+| **Use the existing LM head.** | Answer SFT and a matched typed linear decision head both reach **0.761** four-benchmark macro accuracy. The head has no consistent advantage across three seeds. |
+| **Fine-tune for the target task.** | The 4B backbone rises from **0.706 → 0.761** macro accuracy after answer supervision. Most of the gain is on GQA and SNLI-VE, the task families represented in training; held-out TextVQA and TallyQA change little. |
+| **Share work across questions.** | With **32 questions per image**, shared-prefix batching reaches **5.7 ms amortized per question**, versus **50.7 ms** for independent serial execution and **19.3 ms** for batching without prefix reuse. |
+
+The **8.9×** comparison is a throughput result: the shared batch of 32 finishes in about **182 ms**. Its 5.7 ms figure is the batch time divided by 32, not the latency of one independently arriving request. At `N = 1`, prefix sharing adds overhead (**82.9 ms** versus **48.1 ms** independent). At `N = 32`, peak allocated memory rises from **8.40 to 10.10 GiB**. The speedup comes from both parallel question execution and reuse of visual context.
+
+This is also how we interpret Jev's speed: parallel decisions over shared context can improve throughput, while batching one question does not make the same model's single request faster. A smaller backbone can lower absolute inference cost. In our matched 32-question shared-batch measurement, **4B takes 5.7 ms/question** and **8B takes 7.3 ms/question**, with macro accuracy of **0.761** and **0.780**, respectively. This model-size comparison is separate from the execution-path gain; we did not measure the latency of another Jev service.
+
+## Figures
+
+### Execution sweep
+
+![Warm amortized time per question versus the number of questions sharing an image](assets/figures/sweep.png)
+
+Warm amortized time per question as more questions share an image. Color identifies the reused computation; solid lines are batched paths and dashed lines are serial paths.
+
+### Accuracy and execution cost
+
+![Macro accuracy against amortized time per question at one and 32 questions](assets/figures/frontier.png)
+
+At `N = 1`, prefix sharing adds overhead. At `N = 32`, it moves each backbone left on the cost axis without changing its training state. Hollow and filled markers separate the original backbone from answer SFT; blue and orange separate 4B and 8B.
+
+Timings are synchronized warm measurements on one RTX 5090 in bfloat16. They start from an in-memory decoded image and include preprocessing, transfer, and execution. Image decoding, disk and network I/O, and serving queues are excluded. See the [paper](https://arxiv.org/abs/2609.25845) for the full protocol and limitations.
 
 ## Reproduce the paper
 
