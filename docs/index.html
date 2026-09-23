@@ -47,19 +47,32 @@ nav a{text-decoration:none;padding-block:2px;border-bottom:1px solid transparent
 nav a:hover,nav a:focus-visible{border-bottom-color:var(--ink)}
 
 /* ---------- hero ---------- */
-.hero{padding-block:56px 40px;border-bottom:1px solid var(--rule)}
-.hero h1{font-family:var(--display);font-size:clamp(34px,6vw,60px);line-height:1.02;
-  font-weight:400;letter-spacing:-.01em;max-width:17ch}
+.hero{padding-block:28px 24px;border-bottom:1px solid var(--rule)}
+.hero-top{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:28px;align-items:center}
+.hero h1{font-family:var(--display);font-size:clamp(34px,4.4vw,50px);line-height:1.02;
+  font-weight:400;letter-spacing:-.01em;max-width:15ch}
 .hero h1 em{font-style:italic;color:var(--share)}
-.lede{margin-top:18px;max-width:62ch;color:var(--ink-2);font-size:17px}
+.lede{margin-top:13px;max-width:48ch;color:var(--ink-2);font-size:15px;line-height:1.5}
+.hero-links{display:flex;gap:9px 16px;flex-wrap:wrap;margin-top:17px;font-size:13px}
+.hero-links a{color:var(--ink);text-decoration-thickness:1px;text-underline-offset:3px}
+.hero-demo{margin:0;border:1px solid var(--rule);background:var(--panel)}
+.hero-demo img{display:block;width:100%;height:auto}
+.hero-demo figcaption{padding:7px 10px;border-top:1px solid var(--rule);font-size:10.5px;line-height:1.35;color:var(--muted)}
 .pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;
-  margin-top:34px;background:var(--rule);border:1px solid var(--rule)}
-.cell{background:var(--panel);padding:20px 22px}
-.cell .n{font-family:var(--mono);font-size:clamp(30px,5vw,42px);font-weight:500;
+  margin-top:18px;background:var(--rule);border:1px solid var(--rule)}
+.cell{background:var(--panel);padding:12px 16px}
+.cell .n{font-family:var(--mono);font-size:clamp(25px,3vw,32px);font-weight:500;
   line-height:1;font-variant-numeric:tabular-nums}
-.cell .k{margin-top:10px;font-size:13.5px;color:var(--ink-2);max-width:32ch}
+.cell .k{margin-top:7px;font-size:12px;color:var(--ink-2);max-width:38ch;line-height:1.4}
 .cell.win .n{color:var(--share)}
 .cell.zero .n{color:var(--null)}
+@media (max-width:720px){
+  .hero{padding-block:22px}
+  .hero-top{grid-template-columns:1fr;gap:18px}
+  .hero h1{font-size:clamp(36px,10vw,48px)}
+  .pair{grid-template-columns:1fr 1fr}
+  .cell{padding:11px 12px}
+}
 
 /* ---------- sections ---------- */
 section{padding-block:46px;border-bottom:1px solid var(--rule)}
@@ -69,11 +82,6 @@ section{padding-block:46px;border-bottom:1px solid var(--rule)}
 .prose p{margin:12px 0}
 .prose strong{color:var(--ink);font-weight:600}
 .two{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:30px;margin-top:26px}
-.motion{margin:24px 0 0;border:1px solid var(--rule);background:var(--panel)}
-.motion img{display:block;width:100%;height:auto}
-.motion figcaption{padding:10px 14px;border-top:1px solid var(--rule);font-size:12px;color:var(--muted)}
-.motion-links{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:13px}
-.motion-links a{color:var(--ink);text-decoration-thickness:1px;text-underline-offset:3px}
 
 /* ---------- decomposition ---------- */
 .decomp{margin-top:26px;border:1px solid var(--rule);background:var(--panel)}
@@ -218,11 +226,25 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
 <div class="wrap">
 
 <div class="hero">
-  <h1>One image. Many questions. <em>The win is in the execution.</em></h1>
-  <p class="lede">Software asks a vision–language model for a decision about an image rather than for prose,
-  and usually asks several questions at once. We post-train a 4B backbone for that interface and measure
-  both halves of it — what the training buys, and what the serving path buys. One of those answers is a
-  zero, and it is the more useful half.</p>
+  <div class="hero-top">
+    <div>
+      <h1>One image. Many questions. <em>Shared compute.</em></h1>
+      <p class="lede">Visual Jev scores answer choices from one image and shared context. Ask independent
+      questions together; the model reuses the common prefix and batches the branches.</p>
+      <div class="hero-links">
+        <a href="https://github.com/guanxuyu-sv/Visual-Jev">GitHub repo</a>
+        <a href="https://arxiv.org/abs/2609.25845">Paper</a>
+        <a href="https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft">Hugging Face model</a>
+      </div>
+    </div>
+    <figure class="hero-demo" id="live-demo">
+      <picture>
+        <source media="(prefers-reduced-motion: reduce)" srcset="multi_question_inference.png">
+        <img src="multi_question_inference.gif" alt="One image and shared text are cached, then six questions run in parallel. The incorrect-question option catches a false person premise.">
+      </picture>
+      <figcaption>Six independent questions share one prefix. The invalid-premise option gets 0.966 for the dog/person mismatch.</figcaption>
+    </figure>
+  </div>
   <div class="pair">
     <div class="cell win">
       <div class="n">8.9&times;</div>
@@ -247,27 +269,6 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
     <p>Two output types. <strong>Choice</strong> returns a distribution over a candidate set supplied with
     the request. <strong>Claim</strong> returns supported / contradicted / not-determined. Four benchmarks,
     two of which post-training never sees.</p>
-  </div>
-</section>
-
-<section id="live-demo">
-  <div class="shead"><span class="eyebrow">One real run</span><h2>One image, six questions, one shared prefix</h2></div>
-  <div class="prose">
-    <p>The animation shows the same image and shared text being reused across six independent questions.
-    It includes an <span class="mono">incorrect_question</span> choice: when the question assumes a person
-    but the image shows a dog, the model selects that option with <strong>0.966</strong> probability.</p>
-  </div>
-  <figure class="motion">
-    <picture>
-      <source media="(prefers-reduced-motion: reduce)" srcset="multi_question_inference.png">
-      <img src="multi_question_inference.gif" alt="Visual Jev caches one image and shared text, fans out six questions, and returns separate probabilities. The incorrect-question option wins for the false person premise.">
-    </picture>
-    <figcaption>Six answers from the same image: dog present, one dog, incorrect question, bench, green bottle, no red bottles or cans.</figcaption>
-  </figure>
-  <div class="motion-links">
-    <a href="https://github.com/guanxuyu-sv/Visual-Jev/blob/main/code/examples/quickstart.py">Try the quickstart</a>
-    <a href="https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft">Get the 4B adapter</a>
-    <a href="https://arxiv.org/abs/2609.25845">Read the paper</a>
   </div>
 </section>
 
