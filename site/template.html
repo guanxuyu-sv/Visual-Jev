@@ -498,7 +498,11 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
       <h3>A trap, not a result</h3>
       <p>Train a slot-indexed head only on <span class="mono">K&le;4</span> and slots 4+ never get a
       gradient. The held-out benchmark then reads as a collapse in generalisation. It isn't one — it is
-      the data.</p>
+      the data. Widening the option count to <span class="mono">2&ndash;8</span> is worth
+      <span class="mono">__KCOVER_HEAD__</span> macro accuracy to that head and
+      <span class="mono">__KCOVER_LM__</span> to the LM-head readout, which has no slot to leave
+      untrained — the same intervention, a factor of <span class="mono">__KCOVER_RATIO__&times;</span>
+      apart.</p>
     </div>
   </div>
 </section>
@@ -549,6 +553,7 @@ const f3  = v => v.toFixed(3);
 (function(){
   const rows = [
     ["B1","4B original backbone","LM"],["a2","4B answer SFT","LM"],
+    ["a2k","4B answer SFT, varied K","LM"],
     ["b2k","4B decision CE","head"],["mk","+ sufficiency","head"],
     ["B1_8b","8B original backbone","LM"],["a2_8b","8B answer SFT","LM"],
     ["b2","4B decision CE, K≤4","head"]

@@ -81,6 +81,32 @@ python vdm/training/train.py --variant a2 --seed 0 \
 Three seeds per system. On one RTX 5090 a 4B run takes about 40 minutes and an
 8B run about 65.
 
+Which of the two GQA builds a run trains on is part of what it is, and one
+comparison in the paper turns on it. The typed-head systems (`b2k`, `mk`) and
+the 8B system train on the varied build; `b2` trains on the fixed build, which
+is what leaves most of its 16 slots without gradient. The answer-SFT recipe is
+trained on both so that the corpus is not confounded with the readout:
+
+```bash
+# a2  -- the published adapter: fixed build, K in {2,4}
+python vdm/training/train.py --variant a2 --seed 0 \
+    --train_items "$VDM_ROOT/work/gqa_full/gqa_items.jsonl" \
+                  "$VDM_ROOT/work/other/snli_ve_train.jsonl" \
+    --out $VDM_ROOT/runs/a2_s0 --steps 3000 --batch_size 8 --grad_ckpt
+
+# a2k -- the same recipe on the varied build, K from 2 to 8
+python vdm/training/train.py --variant a2 --seed 0 \
+    --train_items "$VDM_ROOT/work/gqa_k/gqa_items.jsonl" \
+                  "$VDM_ROOT/work/other/snli_ve_train.jsonl" \
+    --out $VDM_ROOT/runs/a2k_s0 --steps 3000 --batch_size 8 --grad_ckpt \
+    --tag answer_sft_varied_K
+```
+
+The same corpus change is worth +0.106 macro accuracy to the typed head and
+-0.002 to the LM-head readout, the second being smaller than a seed standard
+deviation. That is the measurement behind the claim that option-count coverage
+constrains the slot index rather than decision training.
+
 ## 3. Predict
 
 Every system is scored on the same four evaluation sets. The example below
@@ -126,7 +152,10 @@ Each `NAME=DIR` pair names a system and the directory holding its predictions.
 The name decides which output the system is read through -- the answer-SFT and
 untrained baselines are read from the LM head, the typed variants from the
 decision head -- so scoring a run under the wrong name measures a head it never
-trained.
+trained. `vdm/eval/benchmarks.py` keys that choice on the variant prefix, so a
+new run name has to be registered in its `READOUT` map. Adding `a2k` without
+registering it scored 0.247 instead of 0.760, which looks like a failed training
+run and is really an answer-SFT system read through an untrained decision head.
 
 Accuracy is reported per benchmark with the four weighted equally, and
 confidence intervals come from a bootstrap clustered on the parent image, so

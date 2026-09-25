@@ -32,8 +32,20 @@ def build(reports: str, template: str, out: str, demos: str | None = None) -> No
             vals.append(e["accuracy"] if isinstance(e, dict) else float(e))
         return round(st.mean(vals), 4) if vals else None
 
+    def raw(pfx, key):
+        """The same mean without display rounding.
+
+        Ratios of small differences are not safe to take from the 4-decimal
+        values in the table: doing that gives 67 for the option-count factor
+        where the paper's macros give 65, and a page that disagrees with the
+        paper about its own measurement is worse than no page.
+        """
+        vals = [V[k][key]["accuracy"] if isinstance(V[k].get(key), dict) else float(V[k][key])
+                for k in V if k.split("_s")[0] == pfx and V[k].get(key) is not None]
+        return st.mean(vals) if vals else None
+
     bench = {}
-    for pfx in ("B1", "a2", "b2k", "mk", "b2", "B1_8b", "a2_8b"):
+    for pfx in ("B1", "a2", "a2k", "b2k", "mk", "b2", "B1_8b", "a2_8b"):
         row = {"macro": agg(pfx, "macro_avg"),
                "seeds": len([k for k in V if k.split("_s")[0] == pfx])}
         for b in M["benchmarks"]:
@@ -71,6 +83,12 @@ def build(reports: str, template: str, out: str, demos: str | None = None) -> No
                                 / gib(sweep4, "prefix_share_batch", nmax) - 1) * 100),
         "suff_delta": round(bench["mk"]["macro"] - bench["b2k"]["macro"], 4),
         "slot_delta": round(bench["b2"]["TextVQA-Choice"] - bench["b2k"]["TextVQA-Choice"], 4),
+        # the same corpus change, measured on each readout
+        "kcover_head": round(bench["b2k"]["macro"] - bench["b2"]["macro"], 4),
+        "kcover_lm": round(bench["a2k"]["macro"] - bench["a2"]["macro"], 4),
+        "kcover_ratio": round(abs(raw("b2k", "macro_avg") - raw("b2", "macro_avg"))
+                              / max(1e-9, abs(raw("a2k", "macro_avg")
+                                              - raw("a2", "macro_avg")))),
     }
 
     demo_blob = "{}"
@@ -87,6 +105,9 @@ def build(reports: str, template: str, out: str, demos: str | None = None) -> No
         "__SUFF__": delta(facts["suff_delta"]),
         "__SCALE__": delta(facts["scale_delta"]),
         "__SLOT__": delta(facts["slot_delta"]),
+        "__KCOVER_HEAD__": f'{facts["kcover_head"]:+.3f}',
+        "__KCOVER_LM__": delta(facts["kcover_lm"]),
+        "__KCOVER_RATIO__": str(facts["kcover_ratio"]),
         "__SCALE_LAT__": str(facts["scale_lat_pct"]),
         "__SCALE_MEM__": str(facts["scale_mem_pct"]),
         "__MS_GEN__": str(facts["ms_gen"]),
