@@ -1,0 +1,43 @@
+site/template.html
+  s_b0266ad458232d::t_ed5af183d14a26 14
+assets/brand/visual-jev.svg
+  s_b0266ad458232d::t_ed5af183d14a26 1
+docs/api_comparison_mobile.svg
+  s_b0266ad458232d::t_ed5af183d14a26 214,1092,1525
+docs/brand/visual-jev.svg
+  s_b0266ad458232d::t_ed5af183d14a26 1
+assets/figures/api_comparison_mobile.svg
+  s_b0266ad458232d::t_ed5af183d14a26 214,1092,1525
+docs/brand/visual-jev-light.svg
+  s_b0266ad458232d::t_ed5af183d14a26 1
+assets/brand/SOURCES.md
+  s_b0266ad458232d::t_ed5af183d14a26 3
+assets/brand/visual-jev-light.svg
+  s_b0266ad458232d::t_ed5af183d14a26 1
+docs/brand/SOURCES.md
+  s_b0266ad458232d::t_ed5af183d14a26 3
+docs/api_comparison.svg
+  s_b0266ad458232d::t_ed5af183d14a26 229,1252,1721
+docs/index.html
+  s_b0266ad458232d::t_ed5af183d14a26 14
+README.md
+  s_b0266ad458232d::t_ed5af183d14a26 1
+assets/figures/api_comparison.svg
+  s_b0266ad458232d::t_ed5af183d14a26 229,1252,1721
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "6f5dcde95984636c3378b61cb3508eaa0a3f746f",
+  "prompts": {},
+  "sessions": {
+    "s_b0266ad458232d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f0bd-1840-70a0-87ef-57cf819407c3",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "yuhang yao <yuhang.yao@zoom.us>"
+    }
+  }
+}
