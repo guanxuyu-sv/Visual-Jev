@@ -1,0 +1,19 @@
+README.md
+  s_b0266ad458232d::t_13c3b15705b451 1-3,5,8-9,13-16,19,21,23,25,27,29-37,41-43,51-64,69,72-74,77-78,81-83,85-86,97,99,107,109-110,112,114,116,118-123,125,141-160,163-167,189-190,209-210,220-221
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "fe031bf7b349106406bac3dcad035f3ac37b7295",
+  "prompts": {},
+  "sessions": {
+    "s_b0266ad458232d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f0bd-1840-70a0-87ef-57cf819407c3",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "yuhang yao <yuhang.yao@zoom.us>"
+    }
+  }
+}
