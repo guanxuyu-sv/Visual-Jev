@@ -21,7 +21,7 @@ def main():
     systems = {s["key"]: s for s in data["systems"]}
     keys = ["M1", "API_jev", "API_luna"]
     names = ["Visual Jev 4B", "TypeSafe Jev", "OpenAI Decisions"]
-    colors = ["#D8541F", "#778794", "#A2ADB5"]
+    colors = ["#2563EB", "#8298AE", "#A3B1BF"]
     # Official marks are kept intact, including their native proportions.
     logos = [np.asarray(Image.open(root / "assets/brand" / name).convert("RGBA"))
              for name in ("visual-jev.png", "typesafe.png", "openai-black.png")]
@@ -33,7 +33,7 @@ def main():
         box = OffsetImage(bitmap, zoom=size * factor / max(bitmap.shape[:2]))
         ax.add_artist(AnnotationBbox(box, (0, y), frameon=False,
                                    box_alignment=(.25 if index == 2 else 0, .5), pad=0))
-    ink, muted = "#11161A", "#59656D"
+    ink, muted = "#13263C", "#526479"
     plt.rcParams.update({"font.family": "DejaVu Sans", "svg.fonttype": "path",
                          "svg.hashsalt": "visual-jev-api-comparison"})
     fig = plt.figure(figsize=(13.6, 7.4), facecolor="#FFFFFF")
