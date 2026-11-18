@@ -2,7 +2,7 @@
 
 **Decision probabilities for many questions about one image.** This is the official code and results repository for [*Visual Jev: Accurate and Efficient Decisions from Shared Visual Context*](https://arxiv.org/abs/2609.25845). The project extends the Jev-style decision interface to vision: each question supplies its answer choices at request time, and each answer is scored independently against the same image and public context.
 
-**[📄 Paper](https://arxiv.org/abs/2609.25845)** · **[🌐 Project page](https://guanxuyu-sv.github.io/Visual-Jev/)** · **[🤗 4B answer-supervised adapter](https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft)** · **[🧪 Reproduction guide](REPRODUCE.md)**
+**[📄 Paper](https://arxiv.org/abs/2609.25845)** · **[🌐 Project page](https://guanxuyu-sv.github.io/Visual-Jev/)** · **[🤗 4B answer-supervised adapter](https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft)** · **[🤗 8B answer-supervised adapter](https://huggingface.co/guanxuyu/visual-jev-8b-answer-sft)** · **[🧪 Reproduction guide](REPRODUCE.md)**
 
 <p align="center">
   <img src="assets/figures/multi_question_inference.gif" alt="Visual Jev reuses one bottle image and shared text prefix, then answers six varied questions in parallel" width="900">
@@ -44,7 +44,18 @@ python code/examples/quickstart.py \
     --request-file code/examples/bottle_questions.json --device mps
 ```
 
-The shared image and `state` are cached once, then reused by the parallel questions. The demo includes an `incorrect_question` choice for false premises; it catches the dog/person mismatch with 0.966 probability. This runner supports `choice` questions with 2–16 options. It downloads the 4B base and adapter on first use; lower `--max-pixels` if Mac memory is tight.
+The shared image and `state` are cached once, then reused by the parallel questions. The demo includes an `incorrect_question` choice for false premises; it catches the dog/person mismatch with 0.966 probability. This runner supports `choice` questions with 2–16 options. It downloads the 4B base and adapter on first use. To use the 8B adapter instead, add `--model Qwen/Qwen3-VL-8B-Instruct --adapter guanxuyu/visual-jev-8b-answer-sft`; it is more accurate (0.780 against 0.761 macro accuracy on the four benchmarks below) and needs about twice the memory.
+
+### Acting on the probabilities
+
+The raw probabilities are overconfident, so do not threshold them directly. Collect the option logits on a few hundred labelled questions from your own task (`--save-logits calib.jsonl`, then add a `"label"` with the index of the correct option to each line), and fit a temperature and a risk threshold on them:
+
+```bash
+python code/examples/calibrate.py fit   --scores calib.jsonl --risk 0.05 0.1 --out calibration.json
+python code/examples/calibrate.py apply --scores new.jsonl --calibration calibration.json --risk 0.05
+```
+
+`apply` accepts the answers whose calibrated top probability clears the threshold and marks the rest for review. Fit on data from the task you deploy on: a temperature carried over from another task calibrates clearly worse. The thresholds are empirical, not guarantees; in our measurements they held their targets on held-out questions given several hundred calibration questions, and missed them with 160. Keep the option order fixed between fitting and deployment, because reordering the same options changes some accept-or-review decisions. The 8B model card lists the temperatures we fitted per benchmark (`temperatures.json`).
 
 
 ## Results at a glance
@@ -58,6 +69,15 @@ The shared image and `state` are cached once, then reused by the parallel questi
 The **8.9×** comparison is a throughput result: the shared batch of 32 finishes in about **182 ms**. Its 5.7 ms figure is the batch time divided by 32, not the latency of one independently arriving request. At `N = 1`, prefix sharing adds overhead (**82.9 ms** versus **48.1 ms** independent). At `N = 32`, peak allocated memory rises from **8.40 to 10.10 GiB**. The speedup comes from both parallel question execution and reuse of visual context.
 
 This is also how we interpret Jev's speed: parallel decisions over shared context can improve throughput, while batching one question does not make the same model's single request faster. A smaller backbone can lower absolute inference cost. In our matched 32-question shared-batch measurement, **4B takes 5.7 ms/question** and **8B takes 7.3 ms/question**, with macro accuracy of **0.761** and **0.780**, respectively. This model-size comparison is separate from the execution-path gain; we did not measure the latency of another Jev service.
+
+## Corrections
+
+Two statements in the paper's first version are wrong; the results above are unaffected.
+
+- **Image resolution.** The paper states a budget of 196 visual tokens (`max_pixels = 200,704`). The code sets that through an image-processor attribute which the Transformers release we used ignores, so every training, evaluation and timing run used the processor's default, which keeps native resolution: a 500×500 GQA image becomes 256 visual tokens. All execution paths still agree with each other. The quickstart's `--max-pixels` has no effect for the same reason.
+- **TallyQA is not entirely unseen.** Comparing image content, 46 of the 498 TallyQA images (9.2%) are copies of GQA training images. Accuracy on them is not higher (0.341 against 0.366 on the others for the 4B adapter), so the overlap does not inflate the held-out results, but those images are not unseen.
+
+The risk-threshold code also had a bug, now fixed: when several questions tied at the threshold confidence, it could pick a cut inside the tie, and the resulting threshold then admitted the whole tied group, exceeding the target on the calibration data. Thresholds now fall only between distinct confidence values (`code/tests/test_threshold.py`). Ties are rare in the adapters' continuous probabilities: re-running the 4B and 8B threshold analysis with the fix moved 4 of 48 thresholds, changing coverage by at most 0.4 points and realized risk by at most 0.001. Rounded or discretized probabilities tie far more often and are affected much more.
 
 ## Figures
 

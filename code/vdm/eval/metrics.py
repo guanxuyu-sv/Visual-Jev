@@ -132,14 +132,20 @@ def threshold_for_risk(
     confidence: np.ndarray, correct: np.ndarray, target_risk: float
 ) -> float:
     """Smallest confidence threshold on THIS split whose empirical risk is <=
-    target.  Intended to be called on the calibration split only."""
+    target.  Intended to be called on the calibration split only.
+
+    The threshold is applied as confidence >= threshold, which accepts every
+    question tied at that confidence, so a cut is only valid at the end of a
+    group of tied confidences; cutting inside a group would report the risk of
+    a prefix that the threshold cannot select."""
     order = np.argsort(-confidence, kind="mergesort")
     c = correct[order].astype(float)
     conf_sorted = confidence[order]
     cum = np.cumsum(c)
     k = np.arange(1, len(c) + 1)
     risk = 1.0 - cum / k
-    ok = np.where(risk <= target_risk)[0]
+    group_end = np.r_[conf_sorted[1:] < conf_sorted[:-1], True]
+    ok = np.where((risk <= target_risk) & group_end)[0]
     if len(ok) == 0:
         return float(np.max(confidence) + 1e-6)     # accept nothing
     return float(conf_sorted[ok[-1]])

@@ -24,7 +24,10 @@ def main() -> None:
     parser.add_argument("--device", choices=["auto", "cuda", "mps"], default="auto",
                         help="auto selects CUDA first, then Apple MPS")
     parser.add_argument("--max-pixels", type=int, default=200704,
-                        help="image pixel budget; lower it if unified memory is tight")
+                        help="image pixel budget; the Transformers releases we tested ignore it "
+                             "and run images at native resolution, as in training")
+    parser.add_argument("--save-logits", metavar="PATH",
+                        help="append each question's option logits as JSON lines, for calibrate.py")
     args = parser.parse_args()
     if (args.question is None) != (args.choices is None):
         parser.error("--question and --choices must be supplied together")
@@ -126,6 +129,13 @@ def main() -> None:
         for answer, probability in zip(question_ids[i], probs):
             print(f"  {answer}: {probability:.3f}")
         print(f"  prediction: {question_ids[i][max(range(len(probs)), key=probs.__getitem__)]}")
+
+    if args.save_logits:
+        with open(args.save_logits, "a") as fh:
+            for i, question in enumerate(questions):
+                logits = output["lm_option_logits"][i, :group.n_options[i]].float().cpu().tolist()
+                fh.write(json.dumps({"image": args.image, "question": question["instruction"],
+                                     "choices": question_ids[i], "logits": logits}) + "\n")
 
 
 if __name__ == "__main__":
