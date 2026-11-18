@@ -336,6 +336,34 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
   benchmarks equally so the largest cannot carry it.</p>
 </section>
 
+<section id="apis">
+  <div class="shead"><span class="eyebrow">Compared</span><h2>Against hosted decision APIs</h2></div>
+  <div class="prose">
+    <p>Two hosted APIs also return one probability per option: OpenAI's GPT-6 Luna Decisions (through
+    OpenRouter) and TypeSafe Jev. We sent them the same test questions, with the options in the same order,
+    and gave every system its own temperature fitted on the same calibration images. The 8B adapter reaches
+    <span class="mono">__API_8B__</span> macro accuracy, against <span class="mono">__API_JEV__</span> for
+    TypeSafe Jev and <span class="mono">__API_LUNA__</span> for GPT-6 Luna, and ranks its own errors best.</p>
+    <p>Most of that lead comes from GQA and SNLI-VE, which the adapters were trained on and the APIs answer
+    zero-shot. On the two task families no post-training saw, the systems are close, and TypeSafe Jev has
+    the best TextVQA accuracy and the lowest calibration error. TypeSafe Jev is also not deterministic:
+    sending the identical request again changed its top answer for <span class="mono">__API_JEV_REPEAT__%</span>
+    of counting questions.</p>
+  </div>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>System</th><th>GQA</th><th>SNLI-VE</th>
+        <th>TextVQA<span class="dag">&dagger;</span></th><th>TallyQA<span class="dag">&dagger;</span></th>
+        <th>Macro</th><th>NLL</th><th>ECE</th><th>AUROC</th><th>Failed</th></tr></thead>
+      <tbody>__API_ROWS__</tbody>
+    </table>
+  </div>
+  <p class="note" style="padding-inline:0">__API_PROTOCOL__ The accuracy table above uses the short TallyQA
+  subset instead, so its macro averages differ from these. Models: TypeSafe
+  <span class="mono">jev-1.14.0</span>, whose image input TypeSafe marks as not yet production quality;
+  <span class="mono">openai/gpt-6-luna-decisions-20261006</span>; queried November 2026.</p>
+</section>
+
 <section id="cost">
   <div class="shead"><span class="eyebrow">03 / Throughput</span><h2>The gain appears when questions share an image</h2></div>
   <div class="prose">

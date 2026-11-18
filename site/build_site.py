@@ -95,7 +95,34 @@ def build(reports: str, template: str, out: str, demos: str | None = None) -> No
     if demos and os.path.exists(demos):
         demo_blob = json.dumps(json.load(open(demos)), separators=(",", ":"))
 
+    # hosted decision APIs on the same test questions (data/api_comparison.json)
+    api = json.load(open(os.path.join(reports, "api_comparison.json")))
+    cols = ["gqa_val", "snli_ve", "textvqa_k8", "tallyqa_l", "macro"]
+    best = {c: max(s["accuracy"][c] for s in api["systems"]) for c in cols}
+    best.update(nll_ts=min(s["nll_ts"] for s in api["systems"]), ece_ts=min(s["ece_ts"] for s in api["systems"]),
+                auroc=max(s["auroc"] for s in api["systems"]))
+
+    def cell(v, k):
+        text = f"{v:.3f}"
+        return f'<td class="mono">{f"<strong>{text}</strong>" if v == best[k] else text}</td>'
+
+    def failed(s):
+        return f'<td class="mono">{100 * s["failed"]:.1f}%</td>' if "failed" in s else '<td class="mono">&ndash;</td>'
+
+    api_rows = "".join(
+        f'<tr><td>{s["name"]}</td>' + "".join(cell(s["accuracy"][c], c) for c in cols)
+        + cell(s["nll_ts"], "nll_ts") + cell(s["ece_ts"], "ece_ts") + cell(s["auroc"], "auroc")
+        + failed(s) + "</tr>"
+        for s in api["systems"])
+    by = {s["key"]: s for s in api["systems"]}
+
     subs = {
+        "__API_ROWS__": api_rows,
+        "__API_8B__": f'{by["M1_8b"]["accuracy"]["macro"]:.3f}',
+        "__API_JEV__": f'{by["API_jev"]["accuracy"]["macro"]:.3f}',
+        "__API_LUNA__": f'{by["API_luna"]["accuracy"]["macro"]:.3f}',
+        "__API_JEV_REPEAT__": f'{100 * by["API_jev"]["repeat_top_changed"]["tallyqa"]:.1f}',
+        "__API_PROTOCOL__": api["protocol"],
         "__DEMOS__": demo_blob,
         "__DATA__": json.dumps({"sweep4": sweep4, "sweep8": sweep8, "bench": bench,
                                 "seen": M["seen_in_training"], "facts": facts},
