@@ -18,6 +18,24 @@
 
 The default system uses answer-supervised LoRA on Qwen3-VL-4B. It reads candidate-token logits from the backbone's existing **LM head** at each `Answer:` position and normalizes them over that question's valid choices. The typed heads in the diagram are experimental controls.
 
+## Visual Jev vs. hosted decision APIs
+
+**A 4B model reaches 88.5% macro accuracy, ahead of TypeSafe Jev (85.8%) and OpenAI Decisions (83.5%).** On the paper's matched held-out evaluation, `visual-jev-4b` gains **+2.77 percentage points over Jev** and **+5.06 points over OpenAI Decisions**, with better error discrimination and lower negative log-likelihood. These are the paper's full-precision accuracy differences; the displayed scores are rounded.
+
+<p align="center">
+  <a href="https://arxiv.org/abs/2609.25845"><img src="assets/figures/api_comparison.svg" alt="Paper comparison: Visual Jev 4B scores 88.5% accuracy, 0.890 AUROC and 0.309 NLL; TypeSafe Jev scores 85.8%, 0.870 and 0.361; OpenAI Decisions scores 83.5%, 0.833 and 0.440. Higher accuracy and AUROC, and lower NLL, are better." width="100%"></a>
+</p>
+
+| System | Macro accuracy ↑ | Error-discrimination AUROC ↑ | NLL ↓ | ECE ↓ |
+| --- | ---: | ---: | ---: | ---: |
+| **visual-jev-4b (answer SFT)** | **88.5%** | **0.890** | **0.309** | 0.025 |
+| TypeSafe Jev API | 85.8% | 0.870 | 0.361 | **0.013** |
+| OpenAI Decisions API | 83.5% | 0.833 | 0.440 | 0.020 |
+
+Source: [paper, Sec. 5.3 / Table 4](https://arxiv.org/abs/2609.25845) and [checked-in comparison data](data/api_comparison.json). All systems receive the same held-out questions and option orders across GQA, SNLI-VE, TextVQA-Choice and the full TallyQA-Choice test build; macro averages give each benchmark equal weight. NLL, ECE and AUROC use task-local temperature scaling fitted on separate calibration images. Failed API requests receive uniform probabilities (Jev: 1.9%; OpenAI: 0.3%).
+
+Visual Jev is task-fine-tuned, with gains concentrated on GQA and SNLI-VE; the APIs' training data are unknown. **Jev retains the best calibration error and TextVQA accuracy.** This is the November 2026 evaluation snapshot of `jev-1.14.0` (image input marked pre-production by TypeSafe) and `openai/gpt-6-luna-decisions-20261006` via OpenRouter. The comparison measures decision quality; our shared-prefix speedups below compare our own execution paths. The four-task ablation in “Results at a glance” below uses the short TallyQA subset, so its macro averages differ.
+
 ## Try the released model
 
 This is **inference only**: no training run or benchmark dataset is needed. The script runs on CUDA or Apple Silicon's MPS backend. On a Mac, install a regular macOS PyTorch build (do not use the CUDA wheel command in the reproduction section), then install the project's remaining dependencies:
@@ -138,9 +156,10 @@ The repository's code and documentation are released under [Apache-2.0](LICENSE)
 
 ## Build the project website
 
-The [project website](https://guanxuyu-sv.github.io/Visual-Jev/) presents examples, a latency explorer, and negative results. Its figures are generated from the scored outputs in `data/`:
+The [project website](https://guanxuyu-sv.github.io/Visual-Jev/) presents examples, a latency explorer, and negative results. Its figures are generated from the scored outputs in `data/`. Regenerate the API comparison figure after changing its source data, then rebuild the page:
 
 ```bash
+uv run --with matplotlib python site/make_api_comparison.py
 python3 site/build_site.py --reports data --demos data/demos.json
 ```
 

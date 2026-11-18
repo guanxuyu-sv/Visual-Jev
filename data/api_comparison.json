@@ -74,5 +74,18 @@
     "tallyqa": 0.0
    }
   }
- ]
+ ],
+ "paper": {
+  "url": "https://arxiv.org/abs/2609.25845",
+  "section": "Section 5.3, Table 4 (4B/API comparison)",
+  "result_file": "stage_c_api_tl.json",
+  "scope": "November 2026 evaluation snapshot; paper v2 results"
+ },
+ "headline_comparison": {
+  "system": "M1",
+  "gains_pp": {
+   "API_jev": 2.7715366396673824,
+   "API_luna": 5.058860121273412
+  }
+ }
 }

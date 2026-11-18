@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Visual Jev extends the Jev decision interface to images: one visual context, independent questions, shared compute. Explore the official paper, code, results, and released model.">
 <meta property="og:title" content="Visual Jev — one image, many decisions">
-<meta property="og:description" content="Official project page for Visual Jev: paper, code, model, examples, and measured results.">
+<meta property="og:description" content="Visual Jev 4B reaches 88.5% macro accuracy in our paper, ahead of TypeSafe Jev and OpenAI Decisions. Explore the comparison, code and open adapters.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://guanxuyu-sv.github.io/Visual-Jev/">
-<meta property="og:image" content="https://guanxuyu-sv.github.io/Visual-Jev/multi_question_inference.png">
+<meta property="og:image" content="https://guanxuyu-sv.github.io/Visual-Jev/api_comparison.png">
 <meta name="twitter:card" content="summary_large_image">
 <title>Visual Jev — Paper, Code &amp; Model</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -228,6 +228,11 @@ td .best{color:var(--share);font-weight:500}
   text-align:right;white-space:nowrap}
 .vsrow.ours .amt{color:var(--share);font-weight:500}
 .vsrow .amt em{font-style:normal;color:var(--muted);font-size:12px;display:block}
+@media(max-width:600px){
+  .vsrow{grid-template-columns:minmax(0,1fr) auto;gap:10px}
+  .vsrow .track{grid-column:1/-1;grid-row:2}
+  .vsrow .amt{grid-column:2;grid-row:1}
+}
 
 /* ---------- footer ---------- */
 footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
@@ -248,6 +253,7 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
     <a class="mark" href="#top" aria-label="Visual Jev home" style="text-decoration:none">Visual <em>Jev</em></a>
     <nav>
       <a href="#method">Method</a>
+      <a href="#apis">API comparison</a>
       <a href="#quality">Results</a>
       <a href="#cost">Speed</a>
       <a href="#demo">Examples</a>
@@ -285,13 +291,50 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
       <div class="k">faster per question at <span class="mono">N=32</span>, shared prefix and batched
         branches against full repetition — with accuracy identical across paths.</div>
     </div>
-    <div class="cell zero">
-      <div class="n">0 drop</div>
-      <div class="k">in macro accuracy from the decision head, against ordinary answer supervision
-        through the model's own LM head on the same data and budget.</div>
+    <div class="cell win">
+      <div class="n">88.5%</div>
+      <div class="k">macro accuracy with visual-jev-4b: +2.77 points over Jev and
+        +5.06 over OpenAI Decisions in our paper. <a href="#apis">See the comparison ↓</a></div>
     </div>
   </div>
 </div>
+
+<section id="apis">
+  <div class="shead"><span class="eyebrow">Compared</span><h2>Against hosted decision APIs</h2></div>
+  <div class="prose section-intro">
+    <p><strong>visual-jev-4b reaches 88.5% macro accuracy: +2.77 percentage points over
+    TypeSafe Jev and +5.06 over OpenAI Decisions.</strong> The 4B model also ranks its errors
+    better and achieves lower negative log-likelihood in the paper's matched evaluation.</p>
+  </div>
+  <figure class="paper-figure">
+    <picture>
+    <source media="(max-width:640px)" srcset="api_comparison_mobile.svg">
+    <img src="api_comparison.svg" width="1360" height="740" alt="Paper results: Visual Jev 4B leads TypeSafe Jev and OpenAI Decisions in macro accuracy, error-discrimination AUROC and NLL. Jev has the lowest ECE." loading="lazy">
+    </picture>
+    <figcaption>Source: <a class="figure-link" href="https://arxiv.org/abs/2609.25845">paper, Sec. 5.3 / Table 4 ↗</a>.
+    Same held-out questions and option orders. Headline gains use unrounded scores.
+    <a href="api_comparison.png">Download PNG</a> · <a href="api_comparison.svg">SVG</a></figcaption>
+  </figure>
+  <div class="prose section-intro">
+    <p>The larger <strong>visual-jev-8b reaches <span class="mono">0.893</span></strong> macro accuracy
+    on the same evaluation. The full table below includes both released adapters.</p>
+    <p>Gains concentrate on GQA and SNLI-VE, the task families included in adapter post-training;
+    API training data are unknown. <strong>TypeSafe Jev leads on TextVQA and calibration error (ECE).</strong>
+    These results compare decision quality; the speedups elsewhere on this page compare Visual Jev's own execution paths.</p>
+  </div>
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>System</th><th>GQA</th><th>SNLI-VE</th>
+        <th>TextVQA<span class="dag">&dagger;</span></th><th>TallyQA<span class="dag">&dagger;</span></th>
+        <th>Macro</th><th>NLL</th><th>ECE</th><th>AUROC</th><th>Failed</th></tr></thead>
+      <tbody><tr><td>Visual Jev 8B (answer SFT)</td><td class="mono"><strong>0.919</strong></td><td class="mono"><strong>0.818</strong></td><td class="mono">0.979</td><td class="mono"><strong>0.855</strong></td><td class="mono"><strong>0.893</strong></td><td class="mono"><strong>0.285</strong></td><td class="mono">0.021</td><td class="mono"><strong>0.896</strong></td><td class="mono">&ndash;</td></tr><tr><td>Visual Jev 4B (answer SFT)</td><td class="mono">0.916</td><td class="mono">0.808</td><td class="mono">0.975</td><td class="mono">0.841</td><td class="mono">0.885</td><td class="mono">0.309</td><td class="mono">0.025</td><td class="mono">0.890</td><td class="mono">&ndash;</td></tr><tr><td>TypeSafe Jev</td><td class="mono">0.885</td><td class="mono">0.713</td><td class="mono"><strong>0.982</strong></td><td class="mono">0.851</td><td class="mono">0.858</td><td class="mono">0.361</td><td class="mono"><strong>0.013</strong></td><td class="mono">0.870</td><td class="mono">1.9%</td></tr><tr><td>GPT-6 Luna Decisions</td><td class="mono">0.834</td><td class="mono">0.732</td><td class="mono">0.955</td><td class="mono">0.818</td><td class="mono">0.835</td><td class="mono">0.440</td><td class="mono">0.020</td><td class="mono">0.833</td><td class="mono">0.3%</td></tr></tbody>
+    </table>
+  </div>
+  <p class="note" style="padding-inline:0">Test images only (70% of each benchmark's images, split by a fixed hash of the image id); the same questions and option order for every system; each system gets its own temperature fitted on the same calibration images. TallyQA is the full test build with GQA-training duplicates removed. API probabilities are returned to two decimals and floored at 0.005; a failed request counts as a uniform guess. NLL and ECE after temperature scaling; AUROC of the top probability for correct vs. wrong answers. Macro is the equal-weight mean of the four benchmarks. The ablation table in the <a href="#quality">Accuracy section</a> uses the short TallyQA
+  subset instead, so its macro averages differ from these. Models: TypeSafe
+  <span class="mono">jev-1.14.0</span>, whose image input TypeSafe marks as not yet production quality;
+  <span class="mono">openai/gpt-6-luna-decisions-20261006</span>; queried November 2026.</p>
+</section>
 
 <section id="method">
   <div class="shead"><span class="eyebrow">01 / Method</span><h2>One shared input, isolated decisions</h2></div>
@@ -336,33 +379,7 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
   benchmarks equally so the largest cannot carry it.</p>
 </section>
 
-<section id="apis">
-  <div class="shead"><span class="eyebrow">Compared</span><h2>Against hosted decision APIs</h2></div>
-  <div class="prose">
-    <p>Two hosted APIs also return one probability per option: OpenAI's GPT-6 Luna Decisions (through
-    OpenRouter) and TypeSafe Jev. We sent them the same test questions, with the options in the same order,
-    and gave every system its own temperature fitted on the same calibration images. The 8B adapter reaches
-    <span class="mono">0.893</span> macro accuracy, against <span class="mono">0.858</span> for
-    TypeSafe Jev and <span class="mono">0.835</span> for GPT-6 Luna, and ranks its own errors best.</p>
-    <p>Most of that lead comes from GQA and SNLI-VE, which the adapters were trained on and the APIs answer
-    zero-shot. On the two task families no post-training saw, the systems are close, and TypeSafe Jev has
-    the best TextVQA accuracy and the lowest calibration error. TypeSafe Jev is also not deterministic:
-    sending the identical request again changed its top answer for <span class="mono">10.3%</span>
-    of counting questions.</p>
-  </div>
-  <div class="tscroll">
-    <table>
-      <thead><tr><th>System</th><th>GQA</th><th>SNLI-VE</th>
-        <th>TextVQA<span class="dag">&dagger;</span></th><th>TallyQA<span class="dag">&dagger;</span></th>
-        <th>Macro</th><th>NLL</th><th>ECE</th><th>AUROC</th><th>Failed</th></tr></thead>
-      <tbody><tr><td>Visual Jev 8B (answer SFT)</td><td class="mono"><strong>0.919</strong></td><td class="mono"><strong>0.818</strong></td><td class="mono">0.979</td><td class="mono"><strong>0.855</strong></td><td class="mono"><strong>0.893</strong></td><td class="mono"><strong>0.285</strong></td><td class="mono">0.021</td><td class="mono"><strong>0.896</strong></td><td class="mono">&ndash;</td></tr><tr><td>Visual Jev 4B (answer SFT)</td><td class="mono">0.916</td><td class="mono">0.808</td><td class="mono">0.975</td><td class="mono">0.841</td><td class="mono">0.885</td><td class="mono">0.309</td><td class="mono">0.025</td><td class="mono">0.890</td><td class="mono">&ndash;</td></tr><tr><td>TypeSafe Jev</td><td class="mono">0.885</td><td class="mono">0.713</td><td class="mono"><strong>0.982</strong></td><td class="mono">0.851</td><td class="mono">0.858</td><td class="mono">0.361</td><td class="mono"><strong>0.013</strong></td><td class="mono">0.870</td><td class="mono">1.9%</td></tr><tr><td>GPT-6 Luna Decisions</td><td class="mono">0.834</td><td class="mono">0.732</td><td class="mono">0.955</td><td class="mono">0.818</td><td class="mono">0.835</td><td class="mono">0.440</td><td class="mono">0.020</td><td class="mono">0.833</td><td class="mono">0.3%</td></tr></tbody>
-    </table>
-  </div>
-  <p class="note" style="padding-inline:0">Test images only (70% of each benchmark's images, split by a fixed hash of the image id); the same questions and option order for every system; each system gets its own temperature fitted on the same calibration images. TallyQA is the full test build with GQA-training duplicates removed. API probabilities are returned to two decimals and floored at 0.005; a failed request counts as a uniform guess. NLL and ECE after temperature scaling; AUROC of the top probability for correct vs. wrong answers. Macro is the equal-weight mean of the four benchmarks. The accuracy table above uses the short TallyQA
-  subset instead, so its macro averages differ from these. Models: TypeSafe
-  <span class="mono">jev-1.14.0</span>, whose image input TypeSafe marks as not yet production quality;
-  <span class="mono">openai/gpt-6-luna-decisions-20261006</span>; queried November 2026.</p>
-</section>
+
 
 <section id="cost">
   <div class="shead"><span class="eyebrow">03 / Throughput</span><h2>The gain appears when questions share an image</h2></div>

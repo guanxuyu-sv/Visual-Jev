@@ -118,6 +118,9 @@ def build(reports: str, template: str, out: str, demos: str | None = None) -> No
 
     subs = {
         "__API_ROWS__": api_rows,
+        "__API_4B_PCT__": f'{100 * by["M1"]["accuracy"]["macro"]:.1f}',
+        "__API_GAIN_JEV__": f'{api["headline_comparison"]["gains_pp"]["API_jev"]:.2f}',
+        "__API_GAIN_OPENAI__": f'{api["headline_comparison"]["gains_pp"]["API_luna"]:.2f}',
         "__API_8B__": f'{by["M1_8b"]["accuracy"]["macro"]:.3f}',
         "__API_JEV__": f'{by["API_jev"]["accuracy"]["macro"]:.3f}',
         "__API_LUNA__": f'{by["API_luna"]["accuracy"]["macro"]:.3f}',
@@ -160,6 +163,7 @@ def build(reports: str, template: str, out: str, demos: str | None = None) -> No
         "multi_question_inference.gif", "multi_question_inference.png",
         "architecture.png", "paper_frontier.png", "paper_sweep.png",
         "paper_sufficiency.png",
+        "api_comparison.svg", "api_comparison.png", "api_comparison_mobile.svg",
     ):
         shutil.copy2(os.path.join(figures, asset), os.path.join(os.path.dirname(out) or ".", asset))
     print(f"wrote {out} ({len(html)} bytes)")
