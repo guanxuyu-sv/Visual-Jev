@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -244,6 +244,28 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
 @media (prefers-reduced-motion: no-preference){
   .drow .bar i{transition:width .45s cubic-bezier(.2,.7,.3,1)}
 }
+
+/* Research edition: warm paper, graphite, burnt orange. */
+:root{--ground:#f6f4ef;--panel:#fffefb;--ink:#1b211f;--ink-2:#5a625e;--muted:#788079;--rule:#d8ddd5;--rule-soft:#e9ebe4;--share:#c74e29}
+.wrap{max-width:1200px;padding-inline:32px}
+header{background:var(--ground);border-bottom:1px solid var(--rule)}
+.hrow{padding-block:18px}.mark{font-size:27px}nav{gap:24px;font-size:12px}.nav-action{border:1px solid var(--rule);border-radius:30px;padding:7px 14px}
+.hero{padding-block:62px 0;border:0}.hero-top{grid-template-columns:1fr 1.12fr;gap:50px;align-items:center}
+.hero h1{font-size:clamp(60px,6.5vw,88px);line-height:.99;letter-spacing:-.045em;max-width:12ch}.hero h1 em{color:var(--share)}
+.hero .eyebrow{font-size:10px;letter-spacing:.13em;display:flex;align-items:center;gap:9px;margin-bottom:25px}.status-dot{height:6px;width:6px;border-radius:50%;background:var(--share)}
+.lede{font-size:17px;line-height:1.7;max-width:36ch;margin:24px 0}
+.hero-links{align-items:center;gap:20px;font-size:12px;margin-top:30px}.hero-links a{text-decoration:none}.hero-links .primary-cta{background:var(--ink);color:var(--ground);padding:13px 19px;border-radius:4px;display:flex;gap:25px}
+.model-links{margin-top:23px;font-size:10px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap}.model-links a{text-decoration:none;color:var(--ink-2)}
+.hero-demo{border-radius:9px;overflow:hidden;box-shadow:0 24px 60px -30px #303b3640;transform:rotate(-1deg);border-color:#d2d8d1;background:#fff}.demo-chrome{background:#1c2723;color:#d6dfd6;padding:15px 17px;display:flex;justify-content:space-between;font:9px var(--mono);letter-spacing:.06em}.live-tag{color:#b6cbb2}.hero-demo figcaption{background:#f2f3ed;font-size:10px;padding:13px 17px;color:#606b62}
+.pair{margin-top:62px;grid-template-columns:repeat(3,1fr);border-width:1px 0;background:var(--rule)}.cell{padding:30px;background:var(--ground)}.cell:first-child{padding-left:0}.metric-label{font:9px var(--mono);letter-spacing:.12em;color:var(--muted);margin-bottom:17px}.cell .n{font-family:var(--display);font-size:58px;letter-spacing:-.04em;color:var(--ink)}.cell .n small{font:22px var(--display);margin-left:4px;color:var(--share)}.cell .k{font-size:11px;line-height:1.8;margin-top:12px;max-width:none}.cell .k a{text-decoration:none;color:var(--share)}
+section{padding-block:74px}.shead{margin-bottom:22px}.shead h2{font-size:36px}.shead .eyebrow{width:100%;font:10px var(--mono);color:var(--share)}.prose{line-height:1.85}.paper-figure{border-radius:8px;padding:24px}.callout{border-radius:0 6px 6px 0}
+.benchmark-heading{display:flex;justify-content:space-between;gap:40px;align-items:end;margin-bottom:34px}.benchmark-heading h2{font:52px/.99 var(--display);letter-spacing:-.025em}.benchmark-heading h2 em{color:var(--share);font-weight:400}.benchmark-heading .eyebrow{font:10px var(--mono);color:var(--share);margin:0 0 20px}.benchmark-heading>p{max-width:38ch;color:var(--ink-2);font-size:14px;line-height:1.8;margin:0}
+.benchmark-panel{background:#1b2823;color:#f1f4ed;border-radius:12px;overflow:hidden}.benchmark-toolbar{padding:24px 30px;border-bottom:1px solid #ffffff18;display:flex;align-items:center;justify-content:space-between;gap:20px}.benchmark-toolbar .eyebrow{color:#a0b2a5;font:9px var(--mono)}.benchmark-tabs{display:flex;gap:4px;background:#ffffff09;padding:4px;border-radius:6px}.benchmark-tabs button{font:11px var(--sans);background:none;border:0;border-radius:4px;padding:8px 17px;color:#b6c6bb;cursor:pointer}.benchmark-tabs button[aria-pressed=true]{background:#e6eee3;color:#203225}.benchmark-tabs button:focus-visible{outline:2px solid #e9a77c;outline-offset:3px}
+.benchmark-body{display:grid;grid-template-columns:.85fr 1.4fr;gap:60px;padding:38px}.benchmark-story>span{font:10px var(--mono);color:#9cac9f;letter-spacing:.08em}.benchmark-story>strong{font:84px/1.2 var(--display);display:block;letter-spacing:-.04em;color:#e4b08b;margin:8px 0}.benchmark-story small{font-size:32px}.benchmark-story p{font-size:13px;color:#bfcdc1;line-height:1.8;margin:8px 0 23px}.benchmark-story>a{font:10px var(--mono);text-decoration:none;color:#d9e3d5}.benchmark-chart{padding-top:8px}.brow{margin-bottom:25px}.blabel{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:10px}.blabel small{color:#9aaa9d;font:9px var(--mono);margin-left:8px}.blabel strong{font:17px var(--mono);font-weight:400}.btrack{height:13px;background:#ffffff0b;border-radius:2px;overflow:hidden}.btrack i{display:block;height:100%;background:#7c9385;transition:width .35s}.brow.ours .btrack i{background:#e4b08b}.brow.ours .blabel{color:#f2cba7}.axis-note{font:9px var(--mono);color:#8fa394;margin-top:28px}.benchmark-footer{display:flex;justify-content:space-between;gap:20px;border-top:1px solid #ffffff18;padding:18px 30px;font-size:10px;color:#a0b2a5}.benchmark-footer a{color:#d9e3d5;text-decoration:none}.benchmark-context{font-size:11px;color:var(--ink-2);line-height:1.9;margin:20px 0;max-width:95ch}.protocol{border-top:1px solid var(--rule);margin-top:24px}.protocol summary{padding:20px 0;font-size:12px;cursor:pointer;display:flex;justify-content:space-between;list-style:none}.protocol[open] summary span{transform:rotate(45deg)}.protocol .note{max-width:100ch;line-height:1.8}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btrack i{transition:none}}
+@media(max-width:800px){.wrap{padding-inline:24px}.hero-top{grid-template-columns:1fr;gap:42px}.hero{padding-top:40px}.hero h1{font-size:72px;max-width:none}.hero-demo{transform:none}.hero .lede{max-width:42ch}.pair{margin-top:40px}.cell{padding:22px 16px}.cell .n{font-size:43px}.benchmark-body{gap:30px;padding:28px}.benchmark-story>strong{font-size:64px}.benchmark-heading h2{font-size:44px}}
+@media(max-width:560px){header .hrow{gap:10px;padding-block:12px}nav{gap:14px;font-size:10px;flex-wrap:nowrap;overflow-x:auto;width:100%;padding-bottom:4px}nav a{white-space:nowrap}.nav-action{padding:2px 0;border:0}.hero h1{font-size:66px}.hero-links{gap:16px}.hero .eyebrow{font-size:9px}.pair{grid-template-columns:1fr}.cell,.cell:first-child{padding:22px 0;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:8px}.metric-label{grid-column:1/-1;margin-bottom:0}.cell .k{margin:0}.cell .n{font-size:49px}.benchmark-heading{display:block}.benchmark-heading>p{margin-top:24px}.benchmark-heading h2{font-size:46px}.benchmark-toolbar{padding:20px;display:block}.benchmark-tabs{margin-top:16px;width:max-content}.benchmark-body{grid-template-columns:1fr;padding:24px;gap:20px}.benchmark-story>strong{font-size:70px}.benchmark-story p{margin-bottom:12px}.benchmark-chart{padding-top:10px}.benchmark-footer{display:block;padding:20px;line-height:1.8}.benchmark-footer a{display:block;margin-top:10px}section{padding-block:52px}.shead h2{font-size:31px}.paper-figure{padding:12px}.demo-chrome{font-size:8px;gap:12px}}
+
 </style>
 </head>
 <body>
@@ -267,61 +289,44 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
 <div class="hero" id="top">
   <div class="hero-top">
     <div>
-      <p class="eyebrow">Official paper · code · released model</p>
-      <h1>One image. Many questions. <em>Shared compute.</em></h1>
-      <p class="lede">Visual Jev scores answer choices from one image and shared context. Ask independent
-      questions together; the model reuses the common prefix and batches the branches.</p>
+      <p class="eyebrow"><span class="status-dot"></span> Open research · Visual decision models</p>
+      <h1>See once.<br>Decide <em>together.</em></h1>
+      <p class="lede">Accurate decisions from shared visual context. One image, independent questions, and probabilities you can act on.</p>
       <div class="hero-links">
-        <a href="https://github.com/guanxuyu-sv/Visual-Jev">⌘ GitHub code</a>
-        <a href="https://arxiv.org/abs/2609.25845">↗ Paper</a>
-        <a href="https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft">◎ Hugging Face model</a>
+        <a class="primary-cta" href="#try">Try Visual Jev <span>↗</span></a>
+        <a href="https://arxiv.org/abs/2609.25845">Read the paper ↗</a>
+        <a href="https://github.com/guanxuyu-sv/Visual-Jev">GitHub ↗</a>
       </div>
+      <div class="model-links">Open adapters <span>/</span> <a href="https://huggingface.co/guanxuyu/visual-jev-4b-answer-sft">visual-jev-4b ↗</a> <a href="https://huggingface.co/guanxuyu/visual-jev-8b-answer-sft">visual-jev-8b ↗</a></div>
     </div>
     <figure class="hero-demo" id="live-demo">
+      <div class="demo-chrome"><span>VISUAL JEV / INFERENCE</span><span class="live-tag">● SHARED CONTEXT</span></div>
       <picture>
         <source media="(prefers-reduced-motion: reduce)" srcset="multi_question_inference.png">
         <img src="multi_question_inference.gif" width="1440" height="880" alt="One image and shared text are cached, then six questions run in parallel. The incorrect-question option catches a false person premise.">
       </picture>
-      <figcaption>Six independent questions share one prefix. The invalid-premise option gets 0.966 for the dog/person mismatch.</figcaption>
+      <figcaption>One image → six independent probability distributions. False premise detected: 0.966.</figcaption>
     </figure>
   </div>
   <div class="pair">
-    <div class="cell win">
-      <div class="n">8.9&times;</div>
-      <div class="k">faster per question at <span class="mono">N=32</span>, shared prefix and batched
-        branches against full repetition — with accuracy identical across paths.</div>
-    </div>
-    <div class="cell win">
-      <div class="n">88.5%</div>
-      <div class="k">macro accuracy with visual-jev-4b: +2.77 points over Jev and
-        +5.06 over OpenAI Decisions in our paper. <a href="#apis">See the comparison ↓</a></div>
-    </div>
+    <div class="cell win"><div class="metric-label">DECISION QUALITY</div><div class="n">88.5<small>%</small></div><div class="k">4B macro accuracy<br><a href="#apis">Measured against hosted APIs ↗</a></div></div>
+    <div class="cell win"><div class="metric-label">ACCURACY ADVANTAGE</div><div class="n">+5.06<small>pp</small></div><div class="k">over OpenAI Decisions<br>Same held-out questions</div></div>
+    <div class="cell win"><div class="metric-label">SHARED EXECUTION</div><div class="n">8.9<small>×</small></div><div class="k">throughput vs. independent serial execution<br>32 questions / image · RTX 5090</div></div>
   </div>
 </div>
 
 <section id="apis">
-  <div class="shead"><span class="eyebrow">Compared</span><h2>Against hosted decision APIs</h2></div>
-  <div class="prose section-intro">
-    <p><strong>visual-jev-4b reaches 88.5% macro accuracy: +2.77 percentage points over
-    TypeSafe Jev and +5.06 over OpenAI Decisions.</strong> The 4B model also ranks its errors
-    better and achieves lower negative log-likelihood in the paper's matched evaluation.</p>
+  <div class="benchmark-heading">
+    <div><p class="eyebrow">01 / The evidence</p><h2>Small model.<br><em>Strong decisions.</em></h2></div>
+    <p>A task-tuned 4B model leads the two hosted APIs on macro accuracy, error discrimination and NLL in our evaluation.</p>
   </div>
-  <figure class="paper-figure">
-    <picture>
-    <source media="(max-width:640px)" srcset="api_comparison_mobile.svg">
-    <img src="api_comparison.svg" width="1360" height="740" alt="Paper results: Visual Jev 4B leads TypeSafe Jev and OpenAI Decisions in macro accuracy, error-discrimination AUROC and NLL. Jev has the lowest ECE." loading="lazy">
-    </picture>
-    <figcaption>Source: <a class="figure-link" href="https://arxiv.org/abs/2609.25845">paper, Sec. 5.3 / Table 4 ↗</a>.
-    Same held-out questions and option orders. Headline gains use unrounded scores.
-    <a href="api_comparison.png">Download PNG</a> · <a href="api_comparison.svg">SVG</a></figcaption>
-  </figure>
-  <div class="prose section-intro">
-    <p>The larger <strong>visual-jev-8b reaches <span class="mono">0.893</span></strong> macro accuracy
-    on the same evaluation. The full table below includes both released adapters.</p>
-    <p>Gains concentrate on GQA and SNLI-VE, the task families included in adapter post-training;
-    API training data are unknown. <strong>TypeSafe Jev leads on TextVQA and calibration error (ECE).</strong>
-    These results compare decision quality; the speedups elsewhere on this page compare Visual Jev's own execution paths.</p>
+  <div class="benchmark-panel">
+    <div class="benchmark-toolbar"><span class="eyebrow">FOUR BENCHMARKS · MATCHED TEST SET</span><div class="benchmark-tabs" role="group" aria-label="Comparison metric"><button type="button" data-metric="accuracy" aria-pressed="true">Accuracy</button><button type="button" data-metric="auroc" aria-pressed="false">AUROC</button><button type="button" data-metric="nll" aria-pressed="false">NLL</button></div></div>
+    <div class="benchmark-body"><div class="benchmark-story"><span id="metric-caption">MACRO ACCURACY ↑</span><strong id="metric-value">88.5<small>%</small></strong><p id="metric-story">+2.77 points over Jev.<br>+5.06 over OpenAI Decisions.</p><a href="https://arxiv.org/abs/2609.25845">Paper · Table 4 ↗</a></div><div class="benchmark-chart" id="benchmark-chart" aria-live="polite"><div class="brow"><div class="blabel"><span>Visual Jev 4B (answer SFT)</span><strong>88.5%</strong></div><div class="btrack"><i style="width:88.5%"></i></div></div><div class="brow"><div class="blabel"><span>TypeSafe Jev</span><strong>85.8%</strong></div><div class="btrack"><i style="width:85.8%"></i></div></div><div class="brow"><div class="blabel"><span>GPT-6 Luna Decisions</span><strong>83.5%</strong></div><div class="btrack"><i style="width:83.5%"></i></div></div></div></div>
+    <div class="benchmark-footer"><span>Same questions. Same option order. Equal-weight macro averages.</span><a href="api_comparison.png">Download comparison ↗</a></div>
   </div>
+  <p class="benchmark-context">November 2026 evaluation. Visual Jev uses task SFT; API training data are unknown. Jev leads on ECE and TextVQA. <strong>8B reaches 89.3% accuracy.</strong></p>
+  <details class="protocol"><summary>Explore all scores &amp; evaluation protocol <span>+</span></summary>
   <div class="tscroll">
     <table>
       <thead><tr><th>System</th><th>GQA</th><th>SNLI-VE</th>
@@ -334,10 +339,11 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
   subset instead, so its macro averages differ from these. Models: TypeSafe
   <span class="mono">jev-1.14.0</span>, whose image input TypeSafe marks as not yet production quality;
   <span class="mono">openai/gpt-6-luna-decisions-20261006</span>; queried November 2026.</p>
+  </details>
 </section>
 
 <section id="method">
-  <div class="shead"><span class="eyebrow">01 / Method</span><h2>One shared input, isolated decisions</h2></div>
+  <div class="shead"><span class="eyebrow">02 / The architecture</span><h2>One shared input, isolated decisions</h2></div>
   <div class="prose">
     <p>Visual Jev extends the Jev decision interface to vision. Each request supplies an image, optional shared
     text, and independent questions. The image and public prefix are encoded once; the question branches run
@@ -356,7 +362,7 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
 </section>
 
 <section id="quality">
-  <div class="shead"><span class="eyebrow">02 / Accuracy</span><h2>Fine-tuning helps. A new head does not.</h2></div>
+  <div class="shead"><span class="eyebrow">03 / Adaptation</span><h2>Fine-tuning helps. A new head does not.</h2></div>
   <div class="prose">
     <p>Post-training for this interface lifts the equal-weight macro average over four benchmarks from
     <span class="mono">0.706</span> to <span class="mono">0.761</span>. The gain is concentrated on
@@ -382,7 +388,7 @@ footer{padding-block:38px 56px;color:var(--muted);font-size:13px}
 
 
 <section id="cost">
-  <div class="shead"><span class="eyebrow">03 / Throughput</span><h2>The gain appears when questions share an image</h2></div>
+  <div class="shead"><span class="eyebrow">04 / Shared execution</span><h2>The gain appears when questions share an image</h2></div>
   <div class="prose">
     <p>At 32 questions, shared-prefix batching takes <span class="mono">5.7 ms</span> per question
     on an amortized basis, versus <span class="mono">50.7 ms</span> for independent serial runs. Both
@@ -786,6 +792,24 @@ draw();
       <td class="num">${r.gib.toFixed(1)}</td></tr>`;
   }).join("");
 })();
+</script>
+
+<script>
+const comparisonData = [{"key": "M1_8b", "name": "Visual Jev 8B (answer SFT)", "model": "guanxuyu/visual-jev-8b-answer-sft", "accuracy": {"gqa_val": 0.919, "snli_ve": 0.818, "textvqa_k8": 0.979, "tallyqa_l": 0.855, "macro": 0.893}, "nll_ts": 0.285, "ece_ts": 0.021, "auroc": 0.896}, {"key": "M1", "name": "Visual Jev 4B (answer SFT)", "model": "guanxuyu/visual-jev-4b-answer-sft", "accuracy": {"gqa_val": 0.916, "snli_ve": 0.808, "textvqa_k8": 0.975, "tallyqa_l": 0.841, "macro": 0.885}, "nll_ts": 0.309, "ece_ts": 0.025, "auroc": 0.89}, {"key": "API_jev", "name": "TypeSafe Jev", "model": "jev-1.14.0 (TypeSafe System One API; image input marked not yet production quality)", "accuracy": {"gqa_val": 0.885, "snli_ve": 0.713, "textvqa_k8": 0.982, "tallyqa_l": 0.851, "macro": 0.858}, "nll_ts": 0.361, "ece_ts": 0.013, "auroc": 0.87, "failed": 0.019, "repeat_top_changed": {"gqa_val": 0.008, "snli_ve": 0.027, "tallyqa": 0.103}}, {"key": "API_luna", "name": "GPT-6 Luna Decisions", "model": "openai/gpt-6-luna-decisions-20261006 (via OpenRouter)", "accuracy": {"gqa_val": 0.834, "snli_ve": 0.732, "textvqa_k8": 0.955, "tallyqa_l": 0.818, "macro": 0.835}, "nll_ts": 0.44, "ece_ts": 0.02, "auroc": 0.833, "failed": 0.003, "repeat_top_changed": {"gqa_val": 0.0, "snli_ve": 0.0, "tallyqa": 0.0}}];
+const comparisonNames = {M1:'Visual Jev 4B',API_jev:'TypeSafe Jev',API_luna:'OpenAI Decisions'};
+function renderComparison(metric){
+ const spec = {accuracy:['MACRO ACCURACY ↑',1,'Higher is better · scale 0–100%'],auroc:['ERROR-DISCRIMINATION AUROC ↑',1,'Higher is better · scale 0–1'],nll:['NEGATIVE LOG-LIKELIHOOD ↓',.5,'Lower is better · scale 0–0.5']}[metric];
+ const value = s => metric==='accuracy'?s.accuracy.macro:metric==='auroc'?s.auroc:s.nll_ts;
+ const fmt = v => metric==='accuracy'?(v*100).toFixed(1)+'%':v.toFixed(3);
+ const ours=comparisonData.find(s=>s.key==='M1');
+ document.getElementById('metric-caption').textContent=spec[0];
+ document.getElementById('metric-value').textContent=fmt(value(ours));
+ document.getElementById('metric-story').innerHTML=metric==='accuracy'?'+2.77 points over Jev.<br>+5.06 over OpenAI Decisions.':metric==='auroc'?'Better separation of correct<br>and incorrect answers.':'Lower negative log-likelihood<br>after task-local calibration.';
+ document.getElementById('benchmark-chart').innerHTML=comparisonData.filter(s=>s.key in comparisonNames).map(s=>`<div class="brow ${s.key==='M1'?'ours':''}"><div class="blabel"><span>${comparisonNames[s.key]}${s.key==='M1'?'<small>OURS</small>':''}</span><strong>${fmt(value(s))}</strong></div><div class="btrack"><i style="width:${value(s)/spec[1]*100}%"></i></div></div>`).join('')+`<div class="axis-note">${spec[2]}</div>`;
+ document.querySelectorAll('[data-metric]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.metric===metric)));
+}
+document.querySelectorAll('[data-metric]').forEach(b=>b.addEventListener('click',()=>renderComparison(b.dataset.metric)));
+renderComparison('accuracy');
 </script>
 </body>
 </html>

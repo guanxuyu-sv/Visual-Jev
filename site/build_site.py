@@ -118,6 +118,10 @@ def build(reports: str, template: str, out: str, demos: str | None = None) -> No
 
     subs = {
         "__API_ROWS__": api_rows,
+        "__COMPARISON_DATA__": json.dumps(api["systems"]),
+        "__BENCHMARK_BARS__": "".join(
+            f'<div class="brow"><div class="blabel"><span>{s["name"]}</span><strong>{100*s["accuracy"]["macro"]:.1f}%</strong></div><div class="btrack"><i style="width:{100*s["accuracy"]["macro"]}%"></i></div></div>'
+            for s in api["systems"] if s["key"] in ("M1", "API_jev", "API_luna")),
         "__API_4B_PCT__": f'{100 * by["M1"]["accuracy"]["macro"]:.1f}',
         "__API_GAIN_JEV__": f'{api["headline_comparison"]["gains_pp"]["API_jev"]:.2f}',
         "__API_GAIN_OPENAI__": f'{api["headline_comparison"]["gains_pp"]["API_luna"]:.2f}',
