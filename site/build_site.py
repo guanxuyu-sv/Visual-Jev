@@ -170,6 +170,8 @@ def build(reports: str, template: str, out: str, demos: str | None = None) -> No
         "api_comparison.svg", "api_comparison.png", "api_comparison_mobile.svg",
     ):
         shutil.copy2(os.path.join(figures, asset), os.path.join(os.path.dirname(out) or ".", asset))
+    shutil.copytree(os.path.join(repo_root, "assets", "brand"),
+                    os.path.join(os.path.dirname(out) or ".", "brand"), dirs_exist_ok=True)
     print(f"wrote {out} ({len(html)} bytes)")
     print(f"  {facts['total']}x = {facts['batching']}x batching "
           f"x {facts['sharing']}x sharing | head {facts['head_delta']:+.3f}")

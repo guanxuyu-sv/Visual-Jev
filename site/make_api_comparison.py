@@ -10,6 +10,9 @@ import json
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+from matplotlib.offsetbox import AnnotationBbox, OffsetImage
+from PIL import Image
+import numpy as np
 
 
 def main():
@@ -19,6 +22,17 @@ def main():
     keys = ["M1", "API_jev", "API_luna"]
     names = ["Visual Jev 4B", "TypeSafe Jev", "OpenAI Decisions"]
     colors = ["#D8541F", "#778794", "#A2ADB5"]
+    # Official marks are kept intact, including their native proportions.
+    logos = [np.asarray(Image.open(root / "assets/brand" / name).convert("RGBA"))
+             for name in ("visual-jev.png", "typesafe.png", "openai-black.png")]
+
+    def row_logo(ax, index, y, size=13):
+        bitmap = logos[index]
+        # OpenAI's supplied canvas includes 25% clear space on every side.
+        factor = 2 if index == 2 else 1
+        box = OffsetImage(bitmap, zoom=size * factor / max(bitmap.shape[:2]))
+        ax.add_artist(AnnotationBbox(box, (0, y), frameon=False,
+                                   box_alignment=(.25 if index == 2 else 0, .5), pad=0))
     ink, muted = "#11161A", "#59656D"
     plt.rcParams.update({"font.family": "DejaVu Sans", "svg.fonttype": "path",
                          "svg.hashsalt": "visual-jev-api-comparison"})
@@ -46,8 +60,9 @@ def main():
         ax.set_title(title + "\n" + direction, loc="left", fontsize=11,
                      color=ink, pad=20, linespacing=1.7, weight="medium")
         ax.barh([2, 1, 0], values, color=colors, height=.29, zorder=3)
-        for y, name, value in zip([2, 1, 0], names, values):
-            ax.text(0, y + .23, name, fontsize=10, color=ink)
+        for index, (y, name, value) in enumerate(zip([2, 1, 0], names, values)):
+            row_logo(ax, index, y + .30)
+            ax.text(limit * .095, y + .23, name, fontsize=10, color=ink)
             ax.text(value + limit * .025, y,
                     f"{100 * value:.1f}%" if pct else f"{value:.3f}",
                     va="center", fontsize=11, weight="bold" if y == 2 else "normal",
@@ -87,8 +102,9 @@ def main():
         ax = fig.add_axes((.08, bottom, .82, .17))
         ax.set_title(title + " · " + direction.lower(), loc="left", fontsize=11, pad=18)
         ax.barh([2, 1, 0], values, color=colors, height=.26)
-        for y, name, value in zip([2, 1, 0], names, values):
-            ax.text(0, y + .24, name, fontsize=11, color=ink)
+        for index, (y, name, value) in enumerate(zip([2, 1, 0], names, values)):
+            row_logo(ax, index, y + .33, size=14)
+            ax.text(limit * .09, y + .24, name, fontsize=11, color=ink)
             ax.text(value + limit * .025, y, f"{100 * value:.1f}%" if pct else f"{value:.3f}",
                     va="center", fontsize=11, color=colors[0] if y == 2 else ink)
         ax.set_xlim(0, limit * 1.2)

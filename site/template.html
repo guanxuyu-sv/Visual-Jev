@@ -11,6 +11,7 @@
 <meta property="og:image" content="https://guanxuyu-sv.github.io/Visual-Jev/api_comparison.png">
 <meta name="twitter:card" content="summary_large_image">
 <title>Visual Jev — Paper, Code &amp; Model</title>
+<link rel="icon" href="brand/visual-jev.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;450;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -266,13 +267,18 @@ section{padding-block:74px}.shead{margin-bottom:22px}.shead h2{font-size:36px}.s
 @media(max-width:800px){.wrap{padding-inline:24px}.hero-top{grid-template-columns:1fr;gap:42px}.hero{padding-top:40px}.hero h1{font-size:72px;max-width:none}.hero-demo{transform:none}.hero .lede{max-width:42ch}.pair{margin-top:40px}.cell{padding:22px 16px}.cell .n{font-size:43px}.benchmark-body{gap:30px;padding:28px}.benchmark-story>strong{font-size:64px}.benchmark-heading h2{font-size:44px}}
 @media(max-width:560px){header .hrow{gap:10px;padding-block:12px}nav{gap:14px;font-size:10px;flex-wrap:nowrap;overflow-x:auto;width:100%;padding-bottom:4px}nav a{white-space:nowrap}.nav-action{padding:2px 0;border:0}.hero h1{font-size:66px}.hero-links{gap:16px}.hero .eyebrow{font-size:9px}.pair{grid-template-columns:1fr}.cell,.cell:first-child{padding:22px 0;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:8px}.metric-label{grid-column:1/-1;margin-bottom:0}.cell .k{margin:0}.cell .n{font-size:49px}.benchmark-heading{display:block}.benchmark-heading>p{margin-top:24px}.benchmark-heading h2{font-size:46px}.benchmark-toolbar{padding:20px;display:block}.benchmark-tabs{margin-top:16px;width:max-content}.benchmark-body{grid-template-columns:1fr;padding:24px;gap:20px}.benchmark-story>strong{font-size:70px}.benchmark-story p{margin-bottom:12px}.benchmark-chart{padding-top:10px}.benchmark-footer{display:block;padding:20px;line-height:1.8}.benchmark-footer a{display:block;margin-top:10px}section{padding-block:52px}.shead h2{font-size:31px}.paper-figure{padding:12px}.demo-chrome{font-size:8px;gap:12px}}
 
+
+.mark{display:inline-flex;align-items:center;gap:5px}.mark .brand-mark{margin-right:5px}
+.model-name{display:inline-flex;align-items:center;gap:10px}.model-name img{object-fit:contain;flex-shrink:0}.model-name small{margin-left:0}
+@media(max-width:560px){.model-name{gap:8px;font-size:12px}.model-name img{width:22px;height:22px}}
+.logo-slot{display:inline-block;width:24px;height:24px;position:relative;flex-shrink:0}.logo-slot img{position:absolute;inset:0}.logo-slot img[src*="openai"]{width:48px;height:48px;max-width:none;inset:-12px}
 </style>
 </head>
 <body>
 
 <header>
   <div class="wrap hrow">
-    <a class="mark" href="#top" aria-label="Visual Jev home" style="text-decoration:none">Visual <em>Jev</em></a>
+    <a class="mark" href="#top" aria-label="Visual Jev home" style="text-decoration:none"><img class="brand-mark" src="brand/visual-jev.svg" width="32" height="32" alt="">Visual <em>Jev</em></a>
     <nav>
       <a href="#method">Method</a>
       <a href="#apis">API comparison</a>
@@ -796,6 +802,7 @@ draw();
 
 <script>
 const comparisonData = __COMPARISON_DATA__;
+const comparisonLogos = {M1:'visual-jev-light.svg',API_jev:'typesafe.png',API_luna:'openai-white.svg'};
 const comparisonNames = {M1:'Visual Jev 4B',API_jev:'TypeSafe Jev',API_luna:'OpenAI Decisions'};
 function renderComparison(metric){
  const spec = {accuracy:['MACRO ACCURACY ↑',1,'Higher is better · scale 0–100%'],auroc:['ERROR-DISCRIMINATION AUROC ↑',1,'Higher is better · scale 0–1'],nll:['NEGATIVE LOG-LIKELIHOOD ↓',.5,'Lower is better · scale 0–0.5']}[metric];
@@ -805,7 +812,7 @@ function renderComparison(metric){
  document.getElementById('metric-caption').textContent=spec[0];
  document.getElementById('metric-value').textContent=fmt(value(ours));
  document.getElementById('metric-story').innerHTML=metric==='accuracy'?'+__API_GAIN_JEV__ points over Jev.<br>+__API_GAIN_OPENAI__ over OpenAI Decisions.':metric==='auroc'?'Better separation of correct<br>and incorrect answers.':'Lower negative log-likelihood<br>after task-local calibration.';
- document.getElementById('benchmark-chart').innerHTML=comparisonData.filter(s=>s.key in comparisonNames).map(s=>`<div class="brow ${s.key==='M1'?'ours':''}"><div class="blabel"><span>${comparisonNames[s.key]}${s.key==='M1'?'<small>OURS</small>':''}</span><strong>${fmt(value(s))}</strong></div><div class="btrack"><i style="width:${value(s)/spec[1]*100}%"></i></div></div>`).join('')+`<div class="axis-note">${spec[2]}</div>`;
+ document.getElementById('benchmark-chart').innerHTML=comparisonData.filter(s=>s.key in comparisonNames).map(s=>`<div class="brow ${s.key==='M1'?'ours':''}"><div class="blabel"><span class="model-name"><span class="logo-slot"><img src="brand/${comparisonLogos[s.key]}" width="24" height="24" alt=""></span>${comparisonNames[s.key]}${s.key==='M1'?'<small>OURS</small>':''}</span><strong>${fmt(value(s))}</strong></div><div class="btrack"><i style="width:${value(s)/spec[1]*100}%"></i></div></div>`).join('')+`<div class="axis-note">${spec[2]}</div>`;
  document.querySelectorAll('[data-metric]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.metric===metric)));
 }
 document.querySelectorAll('[data-metric]').forEach(b=>b.addEventListener('click',()=>renderComparison(b.dataset.metric)));
