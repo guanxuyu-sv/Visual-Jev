@@ -1,0 +1,21 @@
+docs/index.html
+  s_b0266ad458232d::t_508fc3d2756d64 17,24,260,275-295,319-322,332,349,828
+site/template.html
+  s_b0266ad458232d::t_5dc4c247822adc 17,24,260,275-295,319-322,332,349,828
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "77a53704eac3ca20b46e461f8fdde198a47ae210",
+  "prompts": {},
+  "sessions": {
+    "s_b0266ad458232d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f0bd-1840-70a0-87ef-57cf819407c3",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "yuhang yao <yuhang.yao@zoom.us>"
+    }
+  }
+}
