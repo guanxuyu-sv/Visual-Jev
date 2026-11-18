@@ -1,0 +1,56 @@
+assets/brand/openai-white.svg
+  s_b0266ad458232d::t_fe1cec99defbd2 1-3
+assets/brand/SOURCES.md
+  s_b0266ad458232d::t_fe1cec99defbd2 1-7
+assets/brand/visual-jev.svg
+  s_b0266ad458232d::t_fe1cec99defbd2 1
+assets/figures/api_comparison.svg
+  s_b0266ad458232d::t_0dd33e80797fbd 226-229,233,597-600,603,784-787,790,1249-1252,1256,1335-1338,1341,1378-1381,1384,1718-1721,1725,1785-1788,1791,1848-1851,1854
+assets/brand/visual-jev-light.svg
+  s_b0266ad458232d::t_fe1cec99defbd2 1
+assets/figures/api_comparison_mobile.svg
+  s_b0266ad458232d::t_0dd33e80797fbd 212-215,218,510-513,516,649-652,655,1090-1093,1096,1154-1157,1160,1197-1200,1203,1523-1526,1529,1555-1558,1561,1618-1621,1624
+assets/brand/openai-black.svg
+  s_b0266ad458232d::t_fe1cec99defbd2 1-3
+docs/index.html
+  s_b0266ad458232d::t_0dd33e80797fbd 14,270-274,281,805,815
+docs/api_comparison.svg
+  s_b0266ad458232d::t_0dd33e80797fbd 226-229,233,597-600,603,784-787,790,1249-1252,1256,1335-1338,1341,1378-1381,1384,1718-1721,1725,1785-1788,1791,1848-1851,1854
+docs/api_comparison_mobile.svg
+  s_b0266ad458232d::t_0dd33e80797fbd 212-215,218,510-513,516,649-652,655,1090-1093,1096,1154-1157,1160,1197-1200,1203,1523-1526,1529,1555-1558,1561,1618-1621,1624
+site/template.html
+  s_b0266ad458232d::t_0dd33e80797fbd 14,270-274,281,805,815
+site/make_api_comparison.py
+  s_b0266ad458232d::t_aae51755d8c998 13-15,25-30,34,63-65,105-107
+  s_b0266ad458232d::t_7ee843385fc038 31-33,35
+README.md
+  s_b0266ad458232d::t_a3fefc104e3c0e 1
+docs/brand/SOURCES.md
+  s_b0266ad458232d::t_3224c1392e9575 1-7
+docs/brand/openai-black.svg
+  s_b0266ad458232d::t_7912841e51ea6b 1-3
+docs/brand/openai-white.svg
+  s_b0266ad458232d::t_6d2ea2329be72e 1-3
+docs/brand/visual-jev-light.svg
+  s_b0266ad458232d::t_5baecbd5481aab 1
+docs/brand/visual-jev.svg
+  s_b0266ad458232d::t_dc23f64b45a2dd 1
+site/build_site.py
+  s_b0266ad458232d::t_6e5481e519b83f 173-174
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "6d51de1036f236871c35b9af8420e566f55fd206",
+  "prompts": {},
+  "sessions": {
+    "s_b0266ad458232d": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f0bd-1840-70a0-87ef-57cf819407c3",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "yuhang yao <yuhang.yao@zoom.us>"
+    }
+  }
+}
