@@ -1,4 +1,4 @@
-# <img src="assets/brand/visual-jev.svg" width="38" height="38" alt="Visual Jev V logo"> Visual Jev
+# <img src="assets/brand/visual-jev.svg?v=2" width="38" height="38" alt="Visual Jev blue and teal Victory V logo"> Visual Jev
 
 **Decision probabilities for many questions about one image.** This is the official code and results repository for [*Visual Jev: Accurate and Efficient Decisions from Shared Visual Context*](https://arxiv.org/abs/2609.25845). The project extends the Jev-style decision interface to vision: each question supplies its answer choices at request time, and each answer is scored independently against the same image and public context.
 
