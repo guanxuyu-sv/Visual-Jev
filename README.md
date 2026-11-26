@@ -58,6 +58,8 @@ python code/examples/quickstart.py \
 
 The runner downloads the 4B backbone and adapter on first use, caches the image and shared `state`, and returns choices and probabilities. `--device auto` selects CUDA first, then Apple MPS. It supports `choice` questions with **2–16 options**; the demo includes `incorrect_question` for false premises.
 
+**Can a question contain an image?** Not currently. The image is the single shared input encoded once into the cached prefix; each question and its candidates are text only (`--question`, or `instructions` in the request file). To ask about several images, run one request per image.
+
 <details>
 <summary><b>Use your own image or the 8B adapter</b></summary>
 
